@@ -9,9 +9,6 @@ from .c6_loader import (
     FATURAMENTO_C6_COLS,
     PAGAMENTO_C6_COLS,
 )
-from .c6_loader import (
-    ler_csv as ler_csv_c6,
-)
 from .wab_loader import (
     WAB_COLS,
 )
@@ -64,11 +61,25 @@ class DataLoader:
         self.wab_cols = WAB_COLS
 
     def ler_csv(
-        self, file_path: str, column_mapping: Optional[Dict[str, str]] = None
+        self,
+        file_path: str,
+        column_mapping: Optional[Dict[str, str]] = None,
     ) -> pd.DataFrame:
         """Lê arquivo CSV e aplica mapeamento de colunas."""
         mapping = column_mapping or {}
-        return ler_csv_c6(file_path, mapping)
+
+        try:
+            df = pd.read_csv(file_path, sep=None, engine="python")
+            df.columns = df.columns.str.strip()
+            if mapping:
+                df = df.rename(columns=mapping)
+            return df
+        except FileNotFoundError:
+            self.logger.warning(f"Arquivo não encontrado: {file_path}")
+            return pd.DataFrame()
+        except Exception as exc:  # pylint: disable=broad-except
+            self.logger.error("Erro ao ler CSV %s: %s", file_path, exc)
+            return pd.DataFrame()
 
     def ler_wab_txt(self, file_path: str) -> pd.DataFrame:
         """
@@ -202,15 +213,29 @@ class DataLoader:
         
         return arquivos_convertidos
 
-    def _get_pasta_mes(self, mes_ano: str) -> str:
-        """Converte código do mês para nome da pasta"""
-        meses = {
-            '01': 'janeiro', '02': 'fevereiro', '03': 'marco', '04': 'abril',
-            '05': 'maio', '06': 'junho', '07': 'julho', '08': 'agosto',
-            '09': 'setembro', '10': 'outubro', '11': 'novembro', '12': 'dezembro'
+    def _mapear_colunas(self, df: pd.DataFrame, fonte: str) -> pd.DataFrame:
+        """Aplica o mapeamento de colunas para uma fonte específica."""
+        mapeamentos = {
+            'faturamento_C6': self.faturamento_c6_cols,
+            'faturamento_GDS': self.faturamento_gds_cols,
+            'pagamento_C6': self.pagamento_c6_cols,
+            'pagamento_GDS': self.pagamento_gds_cols,
+            'faturamento_WAB': self.wab_cols,
         }
-        mes = mes_ano[:2]
-        return meses.get(mes, 'julho')  # Default para julho se não encontrar
+
+        mapping = mapeamentos.get(fonte)
+        if not mapping:
+            return df
+
+        df_copy = df.copy()
+        df_copy.columns = df_copy.columns.str.strip()
+        return df_copy.rename(columns=mapping)
+
+    def _get_pasta_mes(self, mes_ano: str) -> str:
+        """Normaliza identificadores de mês para uso em pastas."""
+        if mes_ano.isdigit():
+            return mes_ano
+        return mes_ano.lower()
 
     def padronizar_valores_monetarios(self, df: pd.DataFrame, colunas_valor: List[str]) -> pd.DataFrame:
         """Padroniza valores monetários removendo formatação"""

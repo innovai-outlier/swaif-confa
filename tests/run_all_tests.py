@@ -2,8 +2,8 @@
 Script Principal para Executar Testes do SWAIF-CONFA
 Execute este arquivo para rodar toda a suite de testes
 """
-import sys
 import os
+import sys
 
 # Adiciona o diretório de testes ao path
 sys.path.insert(0, os.path.dirname(__file__))

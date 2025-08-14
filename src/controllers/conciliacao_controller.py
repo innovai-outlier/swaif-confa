@@ -2,10 +2,13 @@
 Controller Principal - Coordena a lógica de negócio
 """
 import logging
-import pandas as pd
 from typing import Dict, List
-from src.models.data_loader import DataLoader
+
+import pandas as pd
+
 from src.models.analisador import Analisador, ResultadoAnalise
+from src.models.data_loader import DataLoader
+
 
 class ConciliacaoController:
     """Controller principal para orquestrar a conciliação"""

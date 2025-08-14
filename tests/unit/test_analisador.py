@@ -1,15 +1,17 @@
 """
 Testes Unitários para o Analisador
 """
-import unittest
-import pandas as pd
-import sys
 import os
+import sys
+import unittest
+
+import pandas as pd
 
 # Adiciona o diretório raiz ao path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from src.models.analisador import Analisador, ResultadoAnalise
+
 
 class TestAnalisador(unittest.TestCase):
     """Testes para o componente Analisador"""

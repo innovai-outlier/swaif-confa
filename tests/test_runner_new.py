@@ -4,11 +4,11 @@ Módulo de execução de testes para o SWAIF-CONFA.
 Oferece execução estruturada com IDs, títulos e relatórios formatados.
 """
 
-import time
-import sys
 import os
+import sys
+import time
 from dataclasses import dataclass
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
 
 # Adicionar o diretório src ao Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))

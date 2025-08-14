@@ -6,6 +6,7 @@ Script para validar que testes WAB TXT foram removidos corretamente
 import os
 import re
 
+
 def verificar_testes_wab():
     print("=== VERIFICAÇÃO: Remoção de Testes WAB TXT ===\n")
     

@@ -2,8 +2,10 @@
 Terminal View - Interface estilo mainframe no terminal
 """
 import os
-from typing import List, Dict
+from typing import Dict, List
+
 from src.models.analisador import ResultadoAnalise
+
 
 class TerminalView:
     """Interface de terminal estilo mainframe"""
@@ -100,12 +102,14 @@ class TerminalView:
             print(f"🔄 {fonte1} x {fonte2}")
             print(f"   {fonte1}: R$ {resultado.total_fonte_1:>15,.2f} ({resultado.registros_fonte_1:>4} registros)")
             print(f"   {fonte2}: R$ {resultado.total_fonte_2:>15,.2f} ({resultado.registros_fonte_2:>4} registros)")
-            print(f"   Diferença: R$ {resultado.diferenca:>12,.2f} ({resultado.diferenca_percentual:>6.2f}%)")
-            
+            print(
+                f"   Diferença: R$ {resultado.diferenca:>12,.2f} ({resultado.percentual_diferenca:>6.2f}%)"
+            )
+
             # Status da análise
-            if abs(resultado.diferenca_percentual) < 1:
+            if abs(resultado.percentual_diferenca) < 1:
                 status = "✅ CONFERE"
-            elif abs(resultado.diferenca_percentual) < 5:
+            elif abs(resultado.percentual_diferenca) < 5:
                 status = "⚠️  PEQUENA DIVERGÊNCIA"
             else:
                 status = "❌ GRANDE DIVERGÊNCIA"
@@ -128,12 +132,14 @@ class TerminalView:
             print(f"🔄 {fonte1} x {fonte2}")
             print(f"   {fonte1}: R$ {resultado.total_fonte_1:>15,.2f} ({resultado.registros_fonte_1:>4} registros)")
             print(f"   {fonte2}: R$ {resultado.total_fonte_2:>15,.2f} ({resultado.registros_fonte_2:>4} registros)")
-            print(f"   Diferença: R$ {resultado.diferenca:>12,.2f} ({resultado.diferenca_percentual:>6.2f}%)")
-            
+            print(
+                f"   Diferença: R$ {resultado.diferenca:>12,.2f} ({resultado.percentual_diferenca:>6.2f}%)"
+            )
+
             # Status da análise
-            if abs(resultado.diferenca_percentual) < 1:
+            if abs(resultado.percentual_diferenca) < 1:
                 status = "✅ CONFERE"
-            elif abs(resultado.diferenca_percentual) < 5:
+            elif abs(resultado.percentual_diferenca) < 5:
                 status = "⚠️  PEQUENA DIVERGÊNCIA"
             else:
                 status = "❌ GRANDE DIVERGÊNCIA"
@@ -149,17 +155,22 @@ class TerminalView:
         print("📋 RESUMO GERAL")
         print("-" * 40)
         
-        total_divergencias = sum(1 for r in resultados if abs(r.diferenca_percentual) >= 1)
+        total_divergencias = sum(1 for r in resultados if abs(r.percentual_diferenca) >= 1)
         total_analises = len(resultados)
-        
+
         print(f"Total de análises realizadas: {total_analises}")
         print(f"Análises com divergência ≥1%: {total_divergencias}")
-        print(f"Taxa de conformidade: {((total_analises - total_divergencias) / total_analises * 100):.1f}%")
+        taxa_conformidade = (
+            (total_analises - total_divergencias) / total_analises * 100
+            if total_analises
+            else 0
+        )
+        print(f"Taxa de conformidade: {taxa_conformidade:.1f}%")
         
         if total_divergencias > 0:
             print(f"\n⚠️  Atenção: {total_divergencias} análise(s) com divergência!")
         else:
-            print(f"\n✅ Todas as análises estão conformes!")
+            print("\n✅ Todas as análises estão conformes!")
     
     def exibir_resumo_dados(self, resumo: Dict[str, Dict], mes_ano: str):
         """Exibe resumo dos dados carregados"""
@@ -216,7 +227,7 @@ class TerminalView:
             input("\nPressione ENTER para continuar...")
             return
         
-        print(f"📊 INFORMAÇÕES GERAIS")
+        print("📊 INFORMAÇÕES GERAIS")
         print("-" * 40)
         print(f"Total de registros: {detalhes['registros']}")
         print(f"Total de colunas: {len(detalhes['colunas'])}")
