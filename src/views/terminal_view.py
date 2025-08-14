@@ -1,12 +1,33 @@
-"""
-Terminal View - Interface estilo mainframe no terminal
-"""
+"""Terminal View - Interface estilo mainframe no terminal"""
 import os
+import sys
+
 from typing import Dict, List
 
 from src.models.analisador import ResultadoAnalise
 
+def format_brl(value: float) -> str:
+    try:
+        x = float(value)
+    except Exception:  # pylint: disable=broad-except
+        x = 0.0
+    s = f"{x:,.2f}"
+    s = s.replace(",", "_").replace(".", ",").replace("_", ".")
+    return s
 
+
+def format_percent(value: float) -> str:
+    return f"{value:.1f}".replace(".", ",")
+
+
+def safe_pause(prompt: str = "\nPressione ENTER para continuar...") -> None:
+    try:
+        if sys.stdin is None or not sys.stdin.isatty():
+            return
+        input(prompt)
+    except (EOFError, OSError):
+        return
+      
 class TerminalView:
     """Interface de terminal estilo mainframe"""
     
@@ -68,27 +89,29 @@ class TerminalView:
         """Exibe resultados da conciliação"""
         self.limpar_tela()
         self.exibir_cabecalho()
-        
+
         print(f"RESULTADOS DA CONCILIAÇÃO - {self._formatar_mes_ano(mes_ano)}")
         print("=" * self.largura_tela)
         print()
-        
-        # Separa resultados por tipo
+
+        if not resultados:
+            print("Nenhum resultado de conciliação encontrado.")
+            self._exibir_resumo_geral(resultados)
+            safe_pause("\nPressione ENTER para continuar...")
+            return
+
         faturamentos = [r for r in resultados if r.tipo_analise == 'faturamento']
         pagamentos = [r for r in resultados if r.tipo_analise == 'pagamento']
-        
-        # Exibe faturamentos
+
         if faturamentos:
             self._exibir_secao_faturamento(faturamentos)
-        
-        # Exibe pagamentos
+
         if pagamentos:
             self._exibir_secao_pagamento(pagamentos)
-        
-        # Resumo geral
+
         self._exibir_resumo_geral(resultados)
-        
-        input("\nPressione ENTER para continuar...")
+
+        safe_pause("\nPressione ENTER para continuar...")
     
     def _exibir_secao_faturamento(self, resultados: List[ResultadoAnalise]):
         """Exibe seção de análise de faturamento"""
@@ -100,10 +123,17 @@ class TerminalView:
             fonte1, fonte2 = resultado.par_fontes
             
             print(f"🔄 {fonte1} x {fonte2}")
-            print(f"   {fonte1}: R$ {resultado.total_fonte_1:>15,.2f} ({resultado.registros_fonte_1:>4} registros)")
-            print(f"   {fonte2}: R$ {resultado.total_fonte_2:>15,.2f} ({resultado.registros_fonte_2:>4} registros)")
             print(
-                f"   Diferença: R$ {resultado.diferenca:>12,.2f} ({resultado.percentual_diferenca:>6.2f}%)"
+                f"   {fonte1}: R$ {format_brl(resultado.total_fonte_1):>15} "
+                f"({resultado.registros_fonte_1:>4} registros)"
+            )
+            print(
+                f"   {fonte2}: R$ {format_brl(resultado.total_fonte_2):>15} "
+                f"({resultado.registros_fonte_2:>4} registros)"
+            )
+            print(
+                f"   Diferença: R$ {format_brl(resultado.diferenca):>12} "
+                f"({format_percent(resultado.percentual_diferenca)}%)"
             )
 
             # Status da análise
@@ -130,10 +160,17 @@ class TerminalView:
             fonte1, fonte2 = resultado.par_fontes
             
             print(f"🔄 {fonte1} x {fonte2}")
-            print(f"   {fonte1}: R$ {resultado.total_fonte_1:>15,.2f} ({resultado.registros_fonte_1:>4} registros)")
-            print(f"   {fonte2}: R$ {resultado.total_fonte_2:>15,.2f} ({resultado.registros_fonte_2:>4} registros)")
             print(
-                f"   Diferença: R$ {resultado.diferenca:>12,.2f} ({resultado.percentual_diferenca:>6.2f}%)"
+                f"   {fonte1}: R$ {format_brl(resultado.total_fonte_1):>15} "
+                f"({resultado.registros_fonte_1:>4} registros)"
+            )
+            print(
+                f"   {fonte2}: R$ {format_brl(resultado.total_fonte_2):>15} "
+                f"({resultado.registros_fonte_2:>4} registros)"
+            )
+            print(
+                f"   Diferença: R$ {format_brl(resultado.diferenca):>12} "
+                f"({format_percent(resultado.percentual_diferenca)}%)"
             )
 
             # Status da análise
@@ -192,7 +229,7 @@ class TerminalView:
                 fonte_limpa = fonte.replace('faturamento_', '').upper()
                 print(f"   {fonte_limpa}: {dados['registros']:>6} registros")
             print()
-        
+
         if pagamentos:
             print("💰 PAGAMENTOS")
             print("-" * 50)
@@ -204,14 +241,17 @@ class TerminalView:
         print("📋 DETALHES TÉCNICOS")
         print("-" * 50)
         for fonte, dados in resumo.items():
-            print(f"\n🔸 {fonte.upper()}")
+            print(f"\n🔸 {fonte}")
             if dados['registros'] > 0:
-                print(f"   Registros: {dados['registros']}")
-                print(f"   Colunas: {', '.join(dados['colunas'][:5])}{'...' if len(dados['colunas']) > 5 else ''}")
+                print(f"   {dados['registros']} registros")
+                colunas = ', '.join(dados['colunas'][:5])
+                print(
+                    f"   {len(dados['colunas'])} colunas: {colunas}{'...' if len(dados['colunas']) > 5 else ''}"
+                )
             else:
                 print("   ❌ Nenhum dado encontrado")
         
-        input("\nPressione ENTER para continuar...")
+        safe_pause("\nPressione ENTER para continuar...")
     
     def exibir_detalhes_fonte(self, detalhes: Dict, fonte: str, mes_ano: str):
         """Exibe detalhes específicos de uma fonte"""
@@ -224,7 +264,7 @@ class TerminalView:
         
         if 'erro' in detalhes:
             print(f"❌ {detalhes['erro']}")
-            input("\nPressione ENTER para continuar...")
+            safe_pause("\nPressione ENTER para continuar...")
             return
         
         print("📊 INFORMAÇÕES GERAIS")
@@ -237,7 +277,9 @@ class TerminalView:
             tipo_total = detalhes.get('tipo_total', 'Total')
             print()
             print("💰" + "=" * 50)
-            print(f"   {tipo_total.upper()}: R$ {detalhes['total_principal']:>20,.2f}")
+            print(
+                f"   {tipo_total.upper()}: R$ {format_brl(detalhes['total_principal']):>20}"
+            )
             print("=" * 53)
         
         print()
@@ -248,9 +290,11 @@ class TerminalView:
             print("-" * 40)
             for coluna, stats in detalhes['estatisticas'].items():
                 print(f"{coluna}:")
-                print(f"   Total: R$ {stats['total']:>12,.2f}")
-                print(f"   Média: R$ {stats['media']:>12,.2f}")
-                print(f"   Min/Max: R$ {stats['minimo']:.2f} / R$ {stats['maximo']:.2f}")
+                print(f"   Total: R$ {format_brl(stats['total']):>12}")
+                print(f"   Média: R$ {format_brl(stats['media']):>12}")
+                print(
+                    f"   Min/Max: R$ {format_brl(stats['minimo'])} / R$ {format_brl(stats['maximo'])}"
+                )
                 print()
         
         # Primeiros registros
@@ -260,7 +304,7 @@ class TerminalView:
             for i, registro in enumerate(detalhes['primeiros_registros'][:3], 1):
                 print(f"Registro {i}: {str(registro)[:80]}{'...' if len(str(registro)) > 80 else ''}")
         
-        input("\nPressione ENTER para continuar...")
+        safe_pause("\nPressione ENTER para continuar...")
     
     def solicitar_fonte(self) -> str:
         """Solicita qual fonte o usuário quer detalhar"""
@@ -287,7 +331,7 @@ class TerminalView:
     def exibir_erro(self, mensagem: str):
         """Exibe mensagem de erro"""
         print(f"\n❌ ERRO: {mensagem}")
-        input("Pressione ENTER para continuar...")
+        safe_pause("Pressione ENTER para continuar...")
     
     def exibir_processando(self, mensagem: str = "Processando..."):
         """Exibe mensagem de processamento"""
