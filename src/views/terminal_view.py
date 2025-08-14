@@ -16,6 +16,10 @@ def format_brl(value: float) -> str:
     return s
 
 
+def format_percent(value: float) -> str:
+    return f"{value:.1f}".replace(".", ",")
+
+
 def safe_pause(prompt: str = "\nPressione ENTER para continuar...") -> None:
     try:
         if sys.stdin is None or not sys.stdin.isatty():
@@ -86,26 +90,28 @@ class TerminalView:
         """Exibe resultados da conciliação"""
         self.limpar_tela()
         self.exibir_cabecalho()
-        
+
         print(f"RESULTADOS DA CONCILIAÇÃO - {self._formatar_mes_ano(mes_ano)}")
         print("=" * self.largura_tela)
         print()
-        
-        # Separa resultados por tipo
+
+        if not resultados:
+            print("Nenhum resultado de conciliação encontrado.")
+            self._exibir_resumo_geral(resultados)
+            safe_pause("\nPressione ENTER para continuar...")
+            return
+
         faturamentos = [r for r in resultados if r.tipo_analise == 'faturamento']
         pagamentos = [r for r in resultados if r.tipo_analise == 'pagamento']
-        
-        # Exibe faturamentos
+
         if faturamentos:
             self._exibir_secao_faturamento(faturamentos)
-        
-        # Exibe pagamentos
+
         if pagamentos:
             self._exibir_secao_pagamento(pagamentos)
-        
-        # Resumo geral
+
         self._exibir_resumo_geral(resultados)
-        
+
         safe_pause("\nPressione ENTER para continuar...")
     
     def _exibir_secao_faturamento(self, resultados: List[ResultadoAnalise]):
@@ -128,7 +134,7 @@ class TerminalView:
             )
             print(
                 f"   Diferença: R$ {format_brl(resultado.diferenca):>12} "
-                f"({resultado.percentual_diferenca:>6.2f}%)"
+                f"({format_percent(resultado.percentual_diferenca)}%)"
             )
 
             # Status da análise
@@ -165,7 +171,7 @@ class TerminalView:
             )
             print(
                 f"   Diferença: R$ {format_brl(resultado.diferenca):>12} "
-                f"({resultado.percentual_diferenca:>6.2f}%)"
+                f"({format_percent(resultado.percentual_diferenca)}%)"
             )
 
             # Status da análise
@@ -224,7 +230,7 @@ class TerminalView:
                 fonte_limpa = fonte.replace('faturamento_', '').upper()
                 print(f"   {fonte_limpa}: {dados['registros']:>6} registros")
             print()
-        
+
         if pagamentos:
             print("💰 PAGAMENTOS")
             print("-" * 50)
@@ -236,10 +242,13 @@ class TerminalView:
         print("📋 DETALHES TÉCNICOS")
         print("-" * 50)
         for fonte, dados in resumo.items():
-            print(f"\n🔸 {fonte.upper()}")
+            print(f"\n🔸 {fonte}")
             if dados['registros'] > 0:
-                print(f"   Registros: {dados['registros']}")
-                print(f"   Colunas: {', '.join(dados['colunas'][:5])}{'...' if len(dados['colunas']) > 5 else ''}")
+                print(f"   {dados['registros']} registros")
+                colunas = ', '.join(dados['colunas'][:5])
+                print(
+                    f"   {len(dados['colunas'])} colunas: {colunas}{'...' if len(dados['colunas']) > 5 else ''}"
+                )
             else:
                 print("   ❌ Nenhum dado encontrado")
         

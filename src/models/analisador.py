@@ -7,7 +7,15 @@ import pandas as pd
 
 
 def _to_float_brl(value):
-    """Convert strings like 'R$ 1.500,75' to float 1500.75."""
+    """Convert BRL-formatted strings to float.
+
+    Examples:
+        - 'R$ 1.500,75' -> 1500.75
+        - '1.500,75' -> 1500.75
+        - '100.50' -> 100.50
+        - 200 -> 200.0
+        - '' or None -> 0.0
+    """
     if value is None:
         return 0.0
     if isinstance(value, (int, float)):
@@ -15,8 +23,11 @@ def _to_float_brl(value):
     s = str(value).strip()
     if not s:
         return 0.0
-    s = s.replace("R$", "").strip()
-    s = s.replace(".", "").replace(",", ".")
+    s = s.replace("R$", "").replace(" ", "")
+    if "," in s and "." in s:
+        s = s.replace(".", "").replace(",", ".")
+    else:
+        s = s.replace(",", ".")
     try:
         return float(s)
     except Exception:  # pylint: disable=broad-except
@@ -304,7 +315,7 @@ class Analisador:
 
         diferenca = abs(total1 - total2)
 
-        base = max(total1, total2)
+        base = total1
         if base <= 0 or total1 == 0.0 or total2 == 0.0:
             percentual_diferenca = 0.0
         else:
@@ -321,102 +332,53 @@ class Analisador:
         )
 
     def _padronizar_valores_c6_faturamento(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Padroniza valores monetários do C6 faturamento - Formato: '; R$ 600,00 ;'"""
+        """Padroniza valores monetários do C6 faturamento."""
         df_copy = df.copy()
-        
-        # Identifica colunas de valor de forma mais flexível
-        colunas_valor = []
-        for col in df_copy.columns:
-            if any(palavra in col.lower() for palavra in ['valor', 'total', 'parcela', 'receita', 'val_fat', 'val_parc']):
-                colunas_valor.append(col)
-        
-        # Se não encontrou nenhuma, usa padrões conhecidos
+
+        colunas_valor = [
+            col
+            for col in df_copy.columns
+            if any(
+                palavra in col.lower()
+                for palavra in ['valor', 'total', 'parcela', 'receita', 'val_fat', 'val_parc']
+            )
+        ]
         if not colunas_valor:
             colunas_valor = ['valor_faturado', 'valor_parcela', 'valor', 'total']
-        
+
         for coluna in colunas_valor:
             if coluna in df_copy.columns:
-                # Tratamento específico para formato C6: '; R$ 600,00 ;'
-                df_processed = (df_copy[coluna]
-                              .astype(str)
-                              .str.strip()                    # Remove espaços externos
-                              .str.replace('R$', '', regex=False)  # Remove R$
-                              .str.strip()                    # Remove espaços restantes
-                              .str.replace('.', '', regex=False)   # Remove pontos de milhar
-                              .str.replace(',', '.', regex=False)  # Vírgula vira ponto decimal
-                              .str.strip()                    # Limpeza final
-                              .replace('', '0'))
-                
-                # Converte para float com tratamento de erro
-                try:
-                    df_copy[coluna] = df_processed.astype(float)
-                    print(f"   ✅ {coluna}: R$ {df_copy[coluna].sum():,.2f}")
-                        
-                except ValueError as e:
-                    self.logger.warning(f"Erro ao converter coluna C6 {coluna}: {e}")
-                    # Em caso de erro, usa conversão segura
-                    df_copy[coluna] = pd.to_numeric(df_processed, errors='coerce').fillna(0)
-                    print(f"   ⚠️ {coluna} (conversão segura): R$ {df_copy[coluna].sum():,.2f}")
-                print("-" * 60)
-        
-        # Padroniza datas
+                df_copy[coluna] = df_copy[coluna].map(_to_float_brl)
+
         for col in df_copy.columns:
             if 'data' in col.lower():
                 df_copy[col] = pd.to_datetime(df_copy[col], format='%d/%m/%Y', errors='coerce')
-        
+
         return df_copy
 
     def _padronizar_valores_c6_pagamento(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Padroniza valores monetários do C6 pagamento - Formato similar ao faturamento"""
+        """Padroniza valores monetários do C6 pagamento."""
         df_copy = df.copy()
-        
-        # Identifica colunas de valor de forma mais flexível
-        colunas_valor = []
-        for col in df_copy.columns:
-            if any(palavra in col.lower() for palavra in ['valor', 'total', 'parcela', 'receita', 'recebivel', 'desconto']):
-                colunas_valor.append(col)
-        
-        # Se não encontrou nenhuma, usa padrões conhecidos  
+
+        colunas_valor = [
+            col
+            for col in df_copy.columns
+            if any(
+                palavra in col.lower()
+                for palavra in ['valor', 'total', 'parcela', 'receita', 'recebivel', 'desconto']
+            )
+        ]
         if not colunas_valor:
             colunas_valor = ['valor_venda', 'valor_parcela', 'valor_recebivel', 'descontos']
-        
+
         for coluna in colunas_valor:
             if coluna in df_copy.columns:
-                # Tratamento específico para valores C6 com possíveis negativos
-                valores_tratados = []
-                for valor in df_copy[coluna]:
-                    valor_str = str(valor).strip()
-                    
-                    # Trata valores negativos como -R$ 26,52
-                    if valor_str.startswith('-R$'):
-                        valor_str = '-' + valor_str[3:].strip()  # Remove -R$ e mantém o -, remove espaços
-                    elif valor_str.startswith('R$'):
-                        valor_str = valor_str[2:].strip()  # Remove R$ e espaços
-                    elif valor_str == '-':
-                        valor_str = '0'  # Hífen sozinho vira 0
-                    elif valor_str == '':
-                        valor_str = '0'  # Vazio vira 0
-                    
-                    # Remove pontos de milhar e converte vírgula para ponto
-                    valor_str = (valor_str
-                                .replace('.', '')  # Remove pontos de milhar
-                                .replace(',', '.'))  # Vírgula vira ponto decimal
-                    
-                    # Tenta converter para float
-                    try:
-                        valor_float = float(valor_str)
-                        valores_tratados.append(valor_float)
-                    except ValueError:
-                        self.logger.warning(f"Valor problemático na coluna {coluna}: '{valor}' -> '{valor_str}'")
-                        valores_tratados.append(0.0)
-                
-                df_copy[coluna] = valores_tratados
-        
-        # Padroniza datas
+                df_copy[coluna] = df_copy[coluna].map(_to_float_brl)
+
         for coluna_data in ['data_venda', 'data_recebivel']:
             if coluna_data in df_copy.columns:
                 df_copy[coluna_data] = pd.to_datetime(df_copy[coluna_data], format='%d/%m/%Y', errors='coerce')
-        
+
         return df_copy
 
     def _padronizar_valores_gds(self, df: pd.DataFrame) -> pd.DataFrame:
