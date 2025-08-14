@@ -4,7 +4,9 @@ Script para testar a formatação de valores nas diferentes fontes
 """
 
 import pandas as pd
+
 from src.models.analisador import Analisador
+
 
 def test_formatacao():
     print("=== TESTE DE FORMATAÇÃO POR FONTE ===\n")

@@ -1,11 +1,30 @@
-"""
-Data Loader - Modelo para carregamento e padronização dos dados
-"""
-import pandas as pd
-import os
-from typing import Dict, List, Tuple
-from datetime import datetime
+"""Data Loader - Modelo para carregamento e padronização dos dados."""
 import logging
+import os
+from typing import Dict, List, Optional
+
+import pandas as pd
+
+from .c6_loader import (
+    FATURAMENTO_C6_COLS,
+    PAGAMENTO_C6_COLS,
+)
+from .c6_loader import (
+    ler_csv as ler_csv_c6,
+)
+from .wab_loader import (
+    WAB_COLS,
+)
+from .wab_loader import (
+    converter_wab_txt_para_json as wab_converter,
+)
+from .wab_loader import (
+    ler_wab_json as wab_json,
+)
+from .wab_loader import (
+    ler_wab_txt as wab_txt,
+)
+
 
 class DataLoader:
     """Classe responsável pelo carregamento e padronização dos dados de faturamento e pagamento"""
@@ -15,17 +34,7 @@ class DataLoader:
         self.logger = logging.getLogger(__name__)
         
         # Mapeamentos de colunas para padronização
-        self.faturamento_c6_cols = {
-            'DT_VENDA': 'data',
-            'HR_VENDA': 'hora', 
-            'VAL_FAT': 'valor_faturado',
-            'VAL_PARC': 'valor_parcela',
-            'BANDEIRA': 'bandeira',
-            'NUM_CARTAO': 'num_cartao',
-            'OPERACAO': 'operacao',
-            'PARCELAS': 'parcelas',
-            'STATUS': 'status'
-        }
+        self.faturamento_c6_cols = FATURAMENTO_C6_COLS
         
         self.faturamento_gds_cols = {
             'R/D': 'tipo',
@@ -48,53 +57,18 @@ class DataLoader:
             'Observações': 'observacoes'
         }
         
-        self.pagamento_c6_cols = {
-            'Hora da venda': 'hora_venda',
-            'Data da venda': 'data_venda',
-            'Data do recebível': 'data_recebivel',
-            'Valor da venda': 'valor_venda',
-            'Valor da parcela': 'valor_parcela',
-            'Descontos': 'descontos',
-            'Valor do recebível': 'valor_recebivel',
-            'Bandeira do cartão': 'bandeira',
-            'Número do cartão': 'num_cartao',
-            'Tipo de operação': 'tipo_operacao',
-            'Parcelas': 'parcelas',
-            'Status do recebível': 'status',
-            'Código da venda': 'codigo_venda',
-            'Instituição Financeira': 'instituicao_financeira',
-            'CNPJ Instituição Financeira': 'cnpj_instituicao'
-        }
+        self.pagamento_c6_cols = PAGAMENTO_C6_COLS
         
         self.pagamento_gds_cols = self.faturamento_gds_cols  # Mesma estrutura
         
-        self.wab_cols = {
-            'DATA': 'data',
-            'VALOR PAGO': 'valor_pago',
-            'VALOR TOTAL': 'valor_total',
-            'DESCRIÇÃO': 'descricao',
-            'MODO DE PAGAMTO': 'forma_pagamento',
-            'NOME DO PACIENTE (FORNECEDOR)': 'paciente',
-            'OBS': 'obs'
-        }
+        self.wab_cols = WAB_COLS
 
-    def ler_csv(self, file_path: str, column_mapping: Dict[str, str]) -> pd.DataFrame:
-        """Lê arquivo CSV e aplica mapeamento de colunas"""
-        try:
-            df = pd.read_csv(file_path, sep=';', encoding='utf-8')
-            
-            # Remove espaços dos nomes das colunas
-            df.columns = df.columns.str.strip()
-            
-            # Aplica mapeamento de colunas
-            df = df.rename(columns=column_mapping)
-            
-            self.logger.info(f"Arquivo CSV lido com sucesso: {os.path.basename(file_path)} - {len(df)} registros")
-            return df
-            
-        except Exception as e:
-            self.logger.error(f"Erro ao ler CSV {file_path}: {e}")
-            return pd.DataFrame()
+    def ler_csv(
+        self, file_path: str, column_mapping: Optional[Dict[str, str]] = None
+    ) -> pd.DataFrame:
+        """Lê arquivo CSV e aplica mapeamento de colunas."""
+        mapping = column_mapping or {}
+        return ler_csv_c6(file_path, mapping)
 
     def ler_wab_txt(self, file_path: str) -> pd.DataFrame:
         """
@@ -109,34 +83,7 @@ class DataLoader:
         Returns:
             DataFrame padronizado com dados do WAB
         """
-        try:
-            registros = []
-            with open(file_path, encoding='utf-8') as f:
-                bloco = {}
-                for linha in f:
-                    linha = linha.strip()
-                    if not linha:
-                        if bloco:
-                            registros.append(bloco)
-                            bloco = {}
-                        continue
-                    if ':' in linha:
-                        chave, valor = linha.split(':', 1)
-                        bloco[chave.strip()] = valor.strip()
-                if bloco:
-                    registros.append(bloco)
-                    
-            df = pd.DataFrame(registros)
-            
-            # Aplica mapeamento de colunas
-            df = df.rename(columns=self.wab_cols)
-            
-            self.logger.info(f"Arquivo WAB TXT lido com sucesso: {os.path.basename(file_path)} - {len(df)} registros")
-            return df
-            
-        except Exception as e:
-            self.logger.error(f"Erro ao ler WAB TXT {file_path}: {e}")
-            return pd.DataFrame()
+        return wab_txt(file_path)
 
     def ler_wab_json(self, file_path: str) -> pd.DataFrame:
         """
@@ -148,69 +95,11 @@ class DataLoader:
         Returns:
             DataFrame padronizado com dados do WAB
         """
-        try:
-            import json
-            
-            with open(file_path, encoding='utf-8') as f:
-                dados = json.load(f)
-            
-            df = pd.DataFrame(dados)
-            
-            # Aplica mapeamento de colunas
-            df = df.rename(columns=self.wab_cols)
-            
-            self.logger.info(f"Arquivo WAB JSON lido com sucesso: {os.path.basename(file_path)} - {len(df)} registros")
-            return df
-            
-        except Exception as e:
-            self.logger.error(f"Erro ao ler WAB JSON {file_path}: {e}")
-            return pd.DataFrame()
+        return wab_json(file_path)
 
-    def converter_wab_txt_para_json(self, txt_path: str, json_path: str = None) -> str:
-        """
-        Converte arquivo WAB TXT para JSON
-        
-        Args:
-            txt_path: Caminho do arquivo TXT original
-            json_path: Caminho do arquivo JSON de destino (opcional)
-            
-        Returns:
-            Caminho do arquivo JSON criado
-        """
-        try:
-            import json
-            
-            # Define caminho do JSON se não fornecido
-            if json_path is None:
-                json_path = txt_path.replace('.txt', '.json')
-            
-            # Lê o arquivo TXT
-            registros = []
-            with open(txt_path, encoding='utf-8') as f:
-                bloco = {}
-                for linha in f:
-                    linha = linha.strip()
-                    if not linha:
-                        if bloco:
-                            registros.append(bloco)
-                            bloco = {}
-                        continue
-                    if ':' in linha:
-                        chave, valor = linha.split(':', 1)
-                        bloco[chave.strip()] = valor.strip()
-                if bloco:
-                    registros.append(bloco)
-            
-            # Salva como JSON
-            with open(json_path, 'w', encoding='utf-8') as f:
-                json.dump(registros, f, ensure_ascii=False, indent=2)
-            
-            self.logger.info(f"Arquivo WAB convertido: {os.path.basename(txt_path)} -> {os.path.basename(json_path)} ({len(registros)} registros)")
-            return json_path
-            
-        except Exception as e:
-            self.logger.error(f"Erro ao converter WAB TXT para JSON: {e}")
-            return None
+    def converter_wab_txt_para_json(self, txt_path: str, json_path: Optional[str] = None) -> Optional[str]:
+        """Converte arquivo WAB TXT para JSON."""
+        return wab_converter(txt_path, json_path)
 
     def carregar_dados_mes(self, mes_ano: str) -> Dict[str, pd.DataFrame]:
         """
@@ -269,7 +158,9 @@ class DataLoader:
         
         return dados
 
-    def converter_todos_wab_txt_para_json(self, mes_ano: str = None) -> List[str]:
+    def converter_todos_wab_txt_para_json(
+        self, mes_ano: Optional[str] = None
+    ) -> List[str]:
         """
         Converte todos os arquivos WAB TXT para JSON em uma pasta ou mês específico
         
