@@ -1,27 +1,23 @@
-"""
-Analisador - Modelo para análise e comparação dos dados
-"""
-import pandas as pd
+"""Ferramentas de análise e comparação dos dados."""
 import logging
-from typing import Dict, Tuple, List
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import Dict, List, Optional, Tuple
+
+import pandas as pd
+
 
 @dataclass
 class ResultadoAnalise:
-    """Resultado da análise de um par de fontes"""
+    """Resultado da análise de um par de fontes."""
     par_fontes: Tuple[str, str]
     total_fonte_1: float
     total_fonte_2: float
     registros_fonte_1: int
     registros_fonte_2: int
     diferenca: float
-    diferenca_percentual: float
-    tipo_analise: str = 'faturamento'  # 'faturamento' ou 'pagamento'
-    detalhes_divergencias: List[Dict] = None
-    
-    def __post_init__(self):
-        if self.detalhes_divergencias is None:
-            self.detalhes_divergencias = []
+    percentual_diferenca: float
+    tipo_analise: str = "faturamento"  # "faturamento" ou "pagamento"
+    detalhes_divergencias: List[Dict] = field(default_factory=list)
 
 class Analisador:
     """Classe responsável pela análise e comparação dos totais entre fontes"""
@@ -41,7 +37,9 @@ class Analisador:
         """
         return self.analisar_todos_pares(dados)
     
-    def analisar_discrepancias(self, dados: Dict[str, pd.DataFrame] = None) -> List[ResultadoAnalise]:
+    def analisar_discrepancias(
+        self, dados: Optional[Dict[str, pd.DataFrame]] = None
+    ) -> List[ResultadoAnalise]:
         """
         Método para análise de discrepâncias - alias para analisar_todos_pares
         
@@ -66,13 +64,13 @@ class Analisador:
         Returns:
             Dict com totais por fonte
         """
-        totais = {}
-        
+        totais: Dict[str, Dict] = {}
+
         # C6 Faturamento
         if 'faturamento_c6' in dados and not dados['faturamento_c6'].empty:
             df_c6 = dados['faturamento_c6'].copy()
             df_c6 = self._padronizar_valores_c6_faturamento(df_c6)
-            
+
             # Usa coluna valor_faturado (principal do C6)
             if 'valor_faturado' in df_c6.columns:
                 coluna_valor = 'valor_faturado'
@@ -80,46 +78,46 @@ class Analisador:
                 coluna_valor = 'valor_venda'
             else:
                 coluna_valor = 'valor'
-            
+
             total_c6 = df_c6[coluna_valor].sum() if coluna_valor in df_c6.columns else 0.0
-            
-            totais['C6'] = {
+
+            totais['faturamento_c6'] = {
                 'total': total_c6,
-                'registros': len(df_c6)
+                'registros': len(df_c6),
             }
         else:
-            totais['C6'] = {'total': 0.0, 'registros': 0}
-        
-        # GDS Faturamento  
+            totais['faturamento_c6'] = {'total': 0.0, 'registros': 0}
+
+        # GDS Faturamento
         if 'faturamento_gds' in dados and not dados['faturamento_gds'].empty:
             df_gds = dados['faturamento_gds'].copy()
             df_gds = self._padronizar_valores_gds(df_gds)
-            
+
             coluna_valor = 'valor' if 'valor' in df_gds.columns else 'valor_venda'
             total_gds = df_gds[coluna_valor].sum() if coluna_valor in df_gds.columns else 0.0
-            
-            totais['GDS'] = {
+
+            totais['faturamento_gds'] = {
                 'total': total_gds,
-                'registros': len(df_gds)
+                'registros': len(df_gds),
             }
         else:
-            totais['GDS'] = {'total': 0.0, 'registros': 0}
-        
+            totais['faturamento_gds'] = {'total': 0.0, 'registros': 0}
+
         # WAB Faturamento
         if 'faturamento_wab' in dados and not dados['faturamento_wab'].empty:
             df_wab = dados['faturamento_wab'].copy()
             df_wab = self._padronizar_valores_wab(df_wab)
-            
+
             coluna_valor = 'valor' if 'valor' in df_wab.columns else 'valor_venda'
             total_wab = df_wab[coluna_valor].sum() if coluna_valor in df_wab.columns else 0.0
-            
-            totais['WAB'] = {
+
+            totais['faturamento_wab'] = {
                 'total': total_wab,
-                'registros': len(df_wab)
+                'registros': len(df_wab),
             }
         else:
-            totais['WAB'] = {'total': 0.0, 'registros': 0}
-        
+            totais['faturamento_wab'] = {'total': 0.0, 'registros': 0}
+
         return totais
 
     def calcular_totais_pagamento(self, dados: Dict[str, pd.DataFrame]) -> Dict[str, Dict]:
@@ -132,8 +130,8 @@ class Analisador:
         Returns:
             Dict com totais por fonte
         """
-        totais = {}
-        
+        totais: Dict[str, Dict] = {}
+
         # C6 Pagamento
         if 'pagamento_c6' in dados and not dados['pagamento_c6'].empty:
             df_c6 = dados['pagamento_c6'].copy()
@@ -144,12 +142,12 @@ class Analisador:
             # Use a coluna de valor disponível
             valor_col = 'valor_recebivel' if 'valor_recebivel' in df_c6.columns else 'valor'
             total_c6 = df_c6[valor_col].sum()
-            totais['C6'] = {
+            totais['pagamento_c6'] = {
                 'total': total_c6,
                 'registros': len(df_c6),
-                'detalhes': df_c6.head(5).to_dict('records')  # Limitado para performance
+                'detalhes': df_c6.head(5).to_dict('records'),  # Limitado para performance
             }
-        
+
         # GDS Pagamento
         if 'pagamento_gds' in dados and not dados['pagamento_gds'].empty:
             df_gds = dados['pagamento_gds'].copy()
@@ -162,15 +160,17 @@ class Analisador:
             # Use a coluna de valor disponível
             valor_col = 'valor_liquido' if 'valor_liquido' in df_gds.columns else 'valor'
             total_gds = df_gds[valor_col].sum()
-            totais['GDS'] = {
+            totais['pagamento_gds'] = {
                 'total': total_gds,
                 'registros': len(df_gds),
-                'detalhes': df_gds.head(5).to_dict('records')
+                'detalhes': df_gds.head(5).to_dict('records'),
             }
-        
+
         return totais
 
-    def analisar_par_faturamento(self, fonte1: str, fonte2: str, totais: Dict[str, Dict]) -> ResultadoAnalise:
+    def analisar_par_faturamento(
+        self, fonte1: str, fonte2: str, totais: Dict[str, Dict]
+    ) -> ResultadoAnalise:
         """Analisa um par de fontes para faturamento"""
         total1 = totais.get(fonte1, {}).get('total', 0)
         total2 = totais.get(fonte2, {}).get('total', 0)
@@ -178,24 +178,30 @@ class Analisador:
         registros2 = totais.get(fonte2, {}).get('registros', 0)
         
         diferenca = total1 - total2
-        diferenca_percentual = (diferenca / max(total1, total2) * 100) if max(total1, total2) > 0 else 0
-        
+        percentual_diferenca = (
+            (diferenca / max(total1, total2) * 100)
+            if max(total1, total2) > 0
+            else 0
+        )
+
         # Identifica divergências (implementar lógica detalhada se necessário)
-        detalhes_divergencias = []
-        
+        detalhes_divergencias: List[Dict] = []
+
         return ResultadoAnalise(
             par_fontes=(fonte1, fonte2),
-            tipo_analise='faturamento',
+            tipo_analise="faturamento",
             total_fonte_1=total1,
             total_fonte_2=total2,
             diferenca=diferenca,
-            diferenca_percentual=diferenca_percentual,
+            percentual_diferenca=percentual_diferenca,
             registros_fonte_1=registros1,
             registros_fonte_2=registros2,
-            detalhes_divergencias=detalhes_divergencias
+            detalhes_divergencias=detalhes_divergencias,
         )
 
-    def analisar_par_pagamento(self, fonte1: str, fonte2: str, totais: Dict[str, Dict]) -> ResultadoAnalise:
+    def analisar_par_pagamento(
+        self, fonte1: str, fonte2: str, totais: Dict[str, Dict]
+    ) -> ResultadoAnalise:
         """Analisa um par de fontes para pagamento"""
         total1 = totais.get(fonte1, {}).get('total', 0)
         total2 = totais.get(fonte2, {}).get('total', 0)
@@ -203,20 +209,24 @@ class Analisador:
         registros2 = totais.get(fonte2, {}).get('registros', 0)
         
         diferenca = total1 - total2
-        diferenca_percentual = (diferenca / max(total1, total2) * 100) if max(total1, total2) > 0 else 0
-        
-        detalhes_divergencias = []
-        
+        percentual_diferenca = (
+            (diferenca / max(total1, total2) * 100)
+            if max(total1, total2) > 0
+            else 0
+        )
+
+        detalhes_divergencias: List[Dict] = []
+
         return ResultadoAnalise(
             par_fontes=(fonte1, fonte2),
-            tipo_analise='pagamento',
+            tipo_analise="pagamento",
             total_fonte_1=total1,
             total_fonte_2=total2,
             diferenca=diferenca,
-            diferenca_percentual=diferenca_percentual,
+            percentual_diferenca=percentual_diferenca,
             registros_fonte_1=registros1,
             registros_fonte_2=registros2,
-            detalhes_divergencias=detalhes_divergencias
+            detalhes_divergencias=detalhes_divergencias,
         )
 
     def analisar_todos_pares(self, dados: Dict[str, pd.DataFrame]) -> List[ResultadoAnalise]:
@@ -232,15 +242,19 @@ class Analisador:
         totais_faturamento = self.calcular_totais_faturamento(dados)
         totais_pagamento = self.calcular_totais_pagamento(dados)
         
-        # Pares de análise de faturamento: (GDS x C6), (GDS x WAB), (C6 x WAB)
-        pares_faturamento = [('GDS', 'C6'), ('GDS', 'WAB'), ('C6', 'WAB')]
+        # Pares de análise de faturamento
+        pares_faturamento = [
+            ('faturamento_c6', 'faturamento_gds'),
+            ('faturamento_c6', 'faturamento_wab'),
+            ('faturamento_gds', 'faturamento_wab'),
+        ]
         
         for fonte1, fonte2 in pares_faturamento:
             resultado = self.analisar_par_faturamento(fonte1, fonte2, totais_faturamento)
             resultados.append(resultado)
         
-        # Pares de análise de pagamento: (GDS x C6)
-        pares_pagamento = [('GDS', 'C6')]
+        # Pares de análise de pagamento
+        pares_pagamento = [('pagamento_c6', 'pagamento_gds')]
         
         for fonte1, fonte2 in pares_pagamento:
             resultado = self.analisar_par_pagamento(fonte1, fonte2, totais_pagamento)
@@ -266,7 +280,7 @@ class Analisador:
         registros2 = fonte2_dados.get('registros', 0)
         
         diferenca = abs(total1 - total2)
-        
+
         # Calcula percentual de diferença
         if total1 > 0:
             percentual_diferenca = (diferenca / total1) * 100
@@ -274,7 +288,7 @@ class Analisador:
             percentual_diferenca = (diferenca / total2) * 100
         else:
             percentual_diferenca = 0.0
-            
+
         return ResultadoAnalise(
             par_fontes=par_fontes,
             total_fonte_1=total1,
@@ -282,7 +296,7 @@ class Analisador:
             registros_fonte_1=registros1,
             registros_fonte_2=registros2,
             diferenca=diferenca,
-            percentual_diferenca=percentual_diferenca
+            percentual_diferenca=percentual_diferenca,
         )
 
     def _padronizar_valores_c6_faturamento(self, df: pd.DataFrame) -> pd.DataFrame:

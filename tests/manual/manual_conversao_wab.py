@@ -4,7 +4,9 @@ Script para testar e demonstrar a conversão WAB TXT para JSON
 """
 
 import os
+
 from src.models.data_loader import DataLoader
+
 
 def test_conversao_wab():
     print("=== TESTE DE CONVERSÃO WAB TXT PARA JSON ===\n")

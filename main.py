@@ -2,14 +2,15 @@
 SWAIF-CONFA - Sistema de Conciliação Financeira
 Aplicação principal com arquitetura MVC
 """
-import sys
 import os
+import sys
 
 # Adiciona o diretório raiz ao path para imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from src.controllers.conciliacao_controller import ConciliacaoController
 from src.views.terminal_view import TerminalView
+
 
 class SwaifConfaApp:
     """Aplicação principal do sistema"""

@@ -1,17 +1,19 @@
 """
 Testes Unitários para o Controller
 """
-import unittest
-import tempfile
 import os
 import shutil
-import pandas as pd
 import sys
+import tempfile
+import unittest
+
+import pandas as pd
 
 # Adiciona o diretório raiz ao path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from src.controllers.conciliacao_controller import ConciliacaoController
+
 
 class TestConciliacaoController(unittest.TestCase):
     """Testes para o componente ConciliacaoController"""
