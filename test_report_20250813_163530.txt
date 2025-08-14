@@ -1,0 +1,303 @@
+
+📊 RELATÓRIO DE TESTES SWAIF-CONFA
+==================================================
+
+🎯 MÉTRICAS GERAIS:
+   • Taxa de Sucesso: 51.8%
+   • Total de Testes: 56
+   • Testes Aprovados: 29
+   • Testes Falharam: 27
+   • Duração Total: 60.92s
+
+⚡ PERFORMANCE:
+   • Tempo Médio por Teste: 1.074s
+   • Teste Mais Rápido: 0.000s
+   • Teste Mais Lento: 59.813s
+
+📋 RESULTADOS DETALHADOS:
+   • TestAnalisador.test_analisar_dados_completos: ❌ FALHOU (0.003s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_analisador.py", line 207, in test_analisar_dados_completos
+    resultados = self.analisador.analisar(dados)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Analisador' object has no attribute 'analisar'
+
+   • TestAnalisador.test_analisar_dados_vazios: ❌ FALHOU (0.003s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_analisador.py", line 180, in test_analisar_dados_vazios
+    resultados = self.analisador.analisar(dados_vazios)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Analisador' object has no attribute 'analisar'
+
+   • TestAnalisador.test_calcular_totais_faturamento: ❌ FALHOU (0.029s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'valor_faturado'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_analisador.py", line 117, in test_calcular_totais_faturamento
+    resultado = self.analisador.calcular_totais_faturamento(dados)
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\..\..\src\models\analisador.py", line 44, in calcular_totais_faturamento
+    total_c6 = df_c6['valor_faturado'].sum()
+               ~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dmene\AppData\Roaming\Python\Python313\site-packages\pandas\core\frame.py", line 4107, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\dmene\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'valor_faturado'
+
+   • TestAnalisador.test_calcular_totais_pagamento: ❌ FALHOU (0.002s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'status'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_analisador.py", line 136, in test_calcular_totais_pagamento
+    resultado = self.analisador.calcular_totais_pagamento(dados)
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\..\..\src\models\analisador.py", line 94, in calcular_totais_pagamento
+    df_c6 = df_c6[df_c6['status'].str.contains('Recebido', na=False)]
+                  ~~~~~^^^^^^^^^^
+  File "C:\Users\dmene\AppData\Roaming\Python\Python313\site-packages\pandas\core\frame.py", line 4107, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\dmene\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'status'
+
+   • TestAnalisador.test_comparar_fontes: ❌ FALHOU (0.001s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_analisador.py", line 150, in test_comparar_fontes
+    resultado = self.analisador._comparar_fontes(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Analisador' object has no attribute '_comparar_fontes'
+
+   • TestAnalisador.test_comparar_fontes_divisao_por_zero: ❌ FALHOU (0.002s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_analisador.py", line 165, in test_comparar_fontes_divisao_por_zero
+    resultado = self.analisador._comparar_fontes(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Analisador' object has no attribute '_comparar_fontes'
+
+   • TestAnalisador.test_criar_resultado_analise: ❌ FALHOU (0.000s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_analisador.py", line 27, in test_criar_resultado_analise
+    resultado = ResultadoAnalise(
+        par_fontes=('fonte1', 'fonte2'),
+    ...<5 lines>...
+        percentual_diferenca=10.0
+    )
+TypeError: ResultadoAnalise.__init__() got an unexpected keyword argument 'percentual_diferenca'
+
+   • TestAnalisador.test_init_analisador: ✅ PASSOU (0.000s)
+   • TestAnalisador.test_padronizar_valores_c6_faturamento: ❌ FALHOU (0.001s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_analisador.py", line 51, in test_padronizar_valores_c6_faturamento
+    self.assertEqual(resultado.loc[0, 'valor_venda'], 100.50)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'R$ 100,50' != 100.5
+
+   • TestAnalisador.test_padronizar_valores_c6_pagamento: ❌ FALHOU (0.003s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_analisador.py", line 73, in test_padronizar_valores_c6_pagamento
+    self.assertEqual(resultado.loc[0, 'descontos'], -10.50)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: np.float64(0.0) != -10.5
+
+   • TestAnalisador.test_padronizar_valores_gds: ❌ FALHOU (0.002s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_analisador.py", line 86, in test_padronizar_valores_gds
+    self.assertEqual(resultado.loc[0, 'valor'], 1500.75)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: np.float64(0.0) != 1500.75
+
+   • TestAnalisador.test_padronizar_valores_wab: ✅ PASSOU (0.001s)
+   • TestConciliacaoController.test_executar_conciliacao_com_dados: ❌ FALHOU (0.017s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_controller.py", line 84, in test_executar_conciliacao_com_dados
+    self.assertTrue(has_data)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: False is not true
+
+   • TestConciliacaoController.test_executar_conciliacao_sem_dados: ✅ PASSOU (0.005s)
+   • TestConciliacaoController.test_init_controller: ✅ PASSOU (0.001s)
+   • TestConciliacaoController.test_obter_detalhes_fonte_com_dados: ❌ FALHOU (0.006s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_controller.py", line 133, in test_obter_detalhes_fonte_com_dados
+    self.assertNotIn('erro', detalhes)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: 'erro' unexpectedly found in {'erro': 'Nenhum dado encontrado para faturamento_c6'}
+
+   • TestConciliacaoController.test_obter_detalhes_fonte_inexistente: ✅ PASSOU (0.004s)
+   • TestConciliacaoController.test_obter_detalhes_fonte_pagamento: ❌ FALHOU (0.007s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_controller.py", line 163, in test_obter_detalhes_fonte_pagamento
+    self.assertEqual(detalhes['tipo_total'], 'Valor Recebível')
+                     ~~~~~~~~^^^^^^^^^^^^^^
+KeyError: 'tipo_total'
+
+   • TestConciliacaoController.test_obter_detalhes_fonte_vazia: ✅ PASSOU (0.005s)
+   • TestConciliacaoController.test_obter_resumo_dados_sem_dados: ✅ PASSOU (0.004s)
+   • TestConciliacaoController.test_verificar_dados_carregados: ✅ PASSOU (0.002s)
+   • TestDataLoader.test_carregar_dados_mes_com_arquivos: ❌ FALHOU (0.012s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_data_loader.py", line 162, in test_carregar_dados_mes_com_arquivos
+    self.assertFalse(resultado['faturamento_c6'].empty)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+   • TestDataLoader.test_carregar_dados_mes_pasta_inexistente: ✅ PASSOU (0.003s)
+   • TestDataLoader.test_get_pasta_mes: ❌ FALHOU (0.001s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_data_loader.py", line 47, in test_get_pasta_mes
+    self.assertEqual(result, expected)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: 'julho' != '072025'
+- julho
++ 072025
+
+
+   • TestDataLoader.test_init_data_loader: ✅ PASSOU (0.001s)
+   • TestDataLoader.test_ler_csv_arquivo_inexistente: ❌ FALHOU (0.001s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_data_loader.py", line 52, in test_ler_csv_arquivo_inexistente
+    resultado = self.data_loader.ler_csv(arquivo_inexistente)
+TypeError: DataLoader.ler_csv() missing 1 required positional argument: 'column_mapping'
+
+   • TestDataLoader.test_ler_csv_arquivo_valido: ❌ FALHOU (0.003s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_data_loader.py", line 67, in test_ler_csv_arquivo_valido
+    resultado = self.data_loader.ler_csv(test_csv)
+TypeError: DataLoader.ler_csv() missing 1 required positional argument: 'column_mapping'
+
+   • TestDataLoader.test_ler_wab_txt_arquivo_inexistente: ✅ PASSOU (0.002s)
+   • TestDataLoader.test_ler_wab_txt_arquivo_valido: ❌ FALHOU (0.010s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_data_loader.py", line 90, in test_ler_wab_txt_arquivo_valido
+    self.assertFalse(resultado.empty)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+   • TestDataLoader.test_mapear_colunas_c6_faturamento: ❌ FALHOU (0.003s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_data_loader.py", line 103, in test_mapear_colunas_c6_faturamento
+    resultado = self.data_loader._mapear_colunas(df_original, 'faturamento_C6')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataLoader' object has no attribute '_mapear_colunas'
+
+   • TestDataLoader.test_mapear_colunas_fonte_inexistente: ❌ FALHOU (0.002s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_data_loader.py", line 113, in test_mapear_colunas_fonte_inexistente
+    resultado = self.data_loader._mapear_colunas(df_test, 'fonte_inexistente')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataLoader' object has no attribute '_mapear_colunas'
+
+   • TestTerminalView.test_exibir_cabecalho: ✅ PASSOU (0.001s)
+   • TestTerminalView.test_exibir_detalhes_fonte_com_erro: ✅ PASSOU (0.001s)
+   • TestTerminalView.test_exibir_detalhes_fonte_completo: ❌ FALHOU (0.003s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Python313\Lib\unittest\mock.py", line 1424, in patched
+    return func(*newargs, **newkeywargs)
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_terminal_view.py", line 180, in test_exibir_detalhes_fonte_completo
+    self.assertIn("5.500,75", output)  # Total principal formatado
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: '5.500,75' not found in "========================================================================================================================\n                                    SWAIF-CONFA - SISTEMA DE CONCILIAÇÃO FINANCEIRA                                     \n========================================================================================================================\n\nDETALHES DA FONTE: FATURAMENTO_C6 - Julho/2025\n========================================================================================================================\n\n📊 INFORMAÇÕES GERAIS\n----------------------------------------\nTotal de registros: 25\nTotal de colunas: 3\n\n💰==================================================\n   VALOR FATURADO: R$             5,500.75\n=====================================================\n\n📈 ESTATÍSTICAS\n----------------------------------------\nvalor_venda:\n   Total: R$     5,500.75\n   Média: R$       220.03\n   Min/Max: R$ 50.00 / R$ 800.00\n\n📋 PRIMEIROS REGISTROS\n----------------------------------------\nRegistro 1: {'data_venda': '01/07/2025', 'valor_venda': 100.0, 'cliente': 'Cliente A'}\nRegistro 2: {'data_venda': '02/07/2025', 'valor_venda': 200.0, 'cliente': 'Cliente B'}\n"
+
+   • TestTerminalView.test_exibir_erro: ✅ PASSOU (0.000s)
+   • TestTerminalView.test_exibir_menu_principal: ✅ PASSOU (0.000s)
+   • TestTerminalView.test_exibir_processando: ✅ PASSOU (0.000s)
+   • TestTerminalView.test_exibir_resultados_conciliacao: ❌ FALHOU (0.001s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Python313\Lib\unittest\mock.py", line 1424, in patched
+    return func(*newargs, **newkeywargs)
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_terminal_view.py", line 65, in test_exibir_resultados_conciliacao
+    ResultadoAnalise(
+    ~~~~~~~~~~~~~~~~^
+        par_fontes=('faturamento_c6', 'faturamento_gds'),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+        percentual_diferenca=10.0
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ),
+    ^
+TypeError: ResultadoAnalise.__init__() got an unexpected keyword argument 'percentual_diferenca'
+
+   • TestTerminalView.test_exibir_resultados_vazios: ❌ FALHOU (0.001s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Python313\Lib\unittest\mock.py", line 1424, in patched
+    return func(*newargs, **newkeywargs)
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_terminal_view.py", line 101, in test_exibir_resultados_vazios
+    self.view.exibir_resultados_conciliacao(resultados, '072025')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\..\..\src\views\terminal_view.py", line 87, in exibir_resultados_conciliacao
+    self._exibir_resumo_geral(resultados)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\..\..\src\views\terminal_view.py", line 157, in _exibir_resumo_geral
+    print(f"Taxa de conformidade: {((total_analises - total_divergencias) / total_analises * 100):.1f}%")
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~
+ZeroDivisionError: division by zero
+
+   • TestTerminalView.test_exibir_resumo_dados: ❌ FALHOU (59.813s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Python313\Lib\unittest\mock.py", line 1424, in patched
+    return func(*newargs, **newkeywargs)
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\unit\test_terminal_view.py", line 129, in test_exibir_resumo_dados
+    self.assertIn("faturamento_c6", output)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'faturamento_c6' not found in '========================================================================================================================\n                                    SWAIF-CONFA - SISTEMA DE CONCILIAÇÃO FINANCEIRA                                     \n========================================================================================================================\n\nRESUMO DOS DADOS - Julho/2025\n========================================================================================================================\n\n📊 FATURAMENTOS\n--------------------------------------------------\n   C6:     10 registros\n   GDS:     15 registros\n\n💰 PAGAMENTOS\n--------------------------------------------------\n   C6:      8 registros\n\n📋 DETALHES TÉCNICOS\n--------------------------------------------------\n\n🔸 FATURAMENTO_C6\n   Registros: 10\n   Colunas: data_venda, valor_venda, cliente\n\n🔸 FATURAMENTO_GDS\n   Registros: 15\n   Colunas: data, valor, cliente\n\n🔸 PAGAMENTO_C6\n   Registros: 8\n   Colunas: data_recebivel, valor_recebivel\n\nPressione ENTER para continuar...'
+
+   • TestTerminalView.test_formatar_mes_ano: ✅ PASSOU (0.000s)
+   • TestTerminalView.test_formatar_mes_ano_invalido: ✅ PASSOU (0.000s)
+   • TestTerminalView.test_init_terminal_view: ✅ PASSOU (0.000s)
+   • TestTerminalView.test_solicitar_fonte_invalida: ✅ PASSOU (0.001s)
+   • TestTerminalView.test_solicitar_fonte_valida: ✅ PASSOU (0.001s)
+   • TestTerminalView.test_solicitar_mes_ano: ✅ PASSOU (0.000s)
+   • TestIntegracaoCompleta.test_consistencia_padronizacao_valores: ✅ PASSOU (0.015s)
+   • TestIntegracaoCompleta.test_fluxo_completo_conciliacao: ❌ FALHOU (0.014s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\integration\test_integration.py", line 107, in test_fluxo_completo_conciliacao
+    self.assertIn(par, pares_encontrados)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('faturamento_c6', 'faturamento_gds') not found in [('GDS', 'C6'), ('GDS', 'WAB'), ('C6', 'WAB'), ('GDS', 'C6')]
+
+   • TestIntegracaoCompleta.test_integracao_data_loader_analisador: ❌ FALHOU (0.014s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\integration\test_integration.py", line 131, in test_integracao_data_loader_analisador
+    resultados = analisador.analisar(dados)
+                 ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Analisador' object has no attribute 'analisar'
+
+   • TestIntegracaoCompleta.test_obter_detalhes_todas_fontes: ✅ PASSOU (0.022s)
+   • TestIntegracaoCompleta.test_performance_sistema_completo: ✅ PASSOU (0.014s)
+   • TestIntegracaoCompleta.test_resumo_dados_consistente: ❌ FALHOU (0.014s)
+     Detalhes: Traceback (most recent call last):
+  File "C:\Users\dmene\Documents\LIVHealth\TI\Projetos\swaif-confa\tests\integration\test_integration.py", line 233, in test_resumo_dados_consistente
+    self.assertGreater(total_registros, 0)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 not greater than 0
+
+   • TestIntegracaoErros.test_sistema_dados_corrompidos: ✅ PASSOU (0.007s)
+   • TestIntegracaoErros.test_sistema_sem_dados: ✅ PASSOU (0.006s)
+   • performance_data_loading: ✅ PASSOU (0.016s)
+   • performance_processing: ✅ PASSOU (0.063s)
+
+🏆 CRITÉRIOS DE APROVAÇÃO:
+   • Taxa de Sucesso Mínima: 90% ❌
+   • Performance Aceitável: <5s total ❌
+   • Cobertura de Componentes: 100% ❌
+
+⚠️  SISTEMA PRECISA DE AJUSTES!

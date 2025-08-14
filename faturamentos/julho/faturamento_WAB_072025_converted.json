@@ -1,0 +1,486 @@
+[
+  {
+    "DATA": "01/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento de consulta",
+    "MODO DE PAGAMTO": "PIX",
+    "NOME DO PACIENTE (FORNECEDOR)": "Juan Maria Martinez Pereira",
+    "OBS": ""
+  },
+  {
+    "DATA": "01/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento de consulta",
+    "MODO DE PAGAMTO": "Debito (VISA). Cartao ************0202",
+    "NOME DO PACIENTE (FORNECEDOR)": "Paula Jordão Ferrari",
+    "OBS": "Foi feito pagamento do sinal R$100,00 no dia 17/06."
+  },
+  {
+    "DATA": "01/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento de consulta",
+    "MODO DE PAGAMTO": "Credito (mastercard) parcelamento em 3x. Cartao ************5969",
+    "NOME DO PACIENTE (FORNECEDOR)": "Rosana Cocione Marinho.",
+    "OBS": ""
+  },
+  {
+    "DATA": "01/07/2025",
+    "VALOR PAGO": "R$350,00",
+    "VALOR TOTAL": "R$350,00",
+    "DESCRIÇÃO": "Pagamento de PLANO IMS",
+    "MODO DE PAGAMTO": "Credito (mastercard) parcelamento em 3x. Cartao ************5969",
+    "NOME DO PACIENTE (FORNECEDOR)": "Rosana Cocione Marinho.",
+    "OBS": ""
+  },
+  {
+    "DATA": "02/07/2025",
+    "VALOR PAGO": "R$10.200,00",
+    "VALOR TOTAL": "R$10.200,00",
+    "DESCRIÇÃO": "Pagamento de plano de acompanhamento",
+    "MODO DE PAGAMTO": "Crédito (MASTERCARD) parcelado em 10x. Cartao ************6031",
+    "NOME DO PACIENTE (FORNECEDOR)": "Maria Luiza Lovece",
+    "OBS": "GDS - Foi lançado um serviço com Data de Emissão 26/06, com essa pagamento com vencimento para o dia 02/07"
+  },
+  {
+    "DATA": "03/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento consulta.",
+    "MODO DE PAGAMTO": "Crédito (MASTERCARD). Cartao ************7399",
+    "NOME DO PACIENTE (FORNECEDOR)": "Cristiane Estacolino",
+    "OBS": "Ja tinha feito pagamento de R$100,00 do sinal no dia 30/06."
+  },
+  {
+    "DATA": "03/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento de consulta.",
+    "MODO DE PAGAMTO": "Crédito (MASTERCARD). Cartao ************0266",
+    "NOME DO PACIENTE (FORNECEDOR)": "Julia Mirio",
+    "OBS": ""
+  },
+  {
+    "DATA": "03/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento de consulta",
+    "MODO DE PAGAMTO": "Crédito (MASTERCARD). Cartao ************0052",
+    "NOME DO PACIENTE (FORNECEDOR)": "Camila Mascarenhas",
+    "OBS": ""
+  },
+  {
+    "DATA": "03/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "PAgamento de consulta + bio",
+    "MODO DE PAGAMTO": "Débito (VISA). Cartao ************8335",
+    "NOME DO PACIENTE (FORNECEDOR)": "",
+    "OBS": "Ja tinha feito pagamento de R$100,00 no dia 25/06"
+  },
+  {
+    "DATA": "03/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento de consulta + bio",
+    "MODO DE PAGAMTO": "Crédito (MASTERCARD) parcelado em 2x. Cartao ************0361",
+    "NOME DO PACIENTE (FORNECEDOR)": "Fernanda Pellegrini",
+    "OBS": "Já tinha feito o pagamento do sinal no dia 30/06."
+  },
+  {
+    "DATA": "03/07/2025",
+    "VALOR PAGO": "R$350,00",
+    "VALOR TOTAL": "R$350,00",
+    "DESCRIÇÃO": "Pagamento de aplicação VITAMINA",
+    "MODO DE PAGAMTO": "Crédito (MASTERCARD) parcelado em 2x. Cartao ************0361",
+    "NOME DO PACIENTE (FORNECEDOR)": "Fernanda Pellegrini",
+    "OBS": ""
+  },
+  {
+    "DATA": "07/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "PAgo consulta + bio",
+    "MODO DE PAGAMTO": "Crédito (MASTERCARD)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Taisi Cristina Fabris Bortolozzo",
+    "OBS": "Feito pagamento do sinal de R$100,00 no dia 30/06"
+  },
+  {
+    "DATA": "07/07/2025",
+    "VALOR PAGO": "R$1.000,00",
+    "VALOR TOTAL": "R$4.200,00",
+    "DESCRIÇÃO": "Pagamento do sinal para plano de acompanhamento.",
+    "MODO DE PAGAMTO": "PIX",
+    "NOME DO PACIENTE (FORNECEDOR)": "Andressa Macedo Vieira",
+    "OBS": ""
+  },
+  {
+    "DATA": "07/07/2025",
+    "VALOR PAGO": "R$800,00",
+    "VALOR TOTAL": "R$800,00",
+    "DESCRIÇÃO": "Pagamento consulta + bio",
+    "MODO DE PAGAMTO": "QR code PIX.",
+    "NOME DO PACIENTE (FORNECEDOR)": "Ana Paula Guth Bariani de Lima",
+    "OBS": ""
+  },
+  {
+    "DATA": "07/07/2025",
+    "VALOR PAGO": "R$800,00",
+    "VALOR TOTAL": "R$800,00",
+    "DESCRIÇÃO": "Pagamento consulta + bio",
+    "MODO DE PAGAMTO": "Crédito (MASTERCARD)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Meire Tiyomi Mihara",
+    "OBS": ""
+  },
+  {
+    "DATA": "10/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento de consulta",
+    "MODO DE PAGAMTO": "Crédito (VISA)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Marina Graziella Caleffi da Silva Ramos",
+    "OBS": ""
+  },
+  {
+    "DATA": "10/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento de consulta",
+    "MODO DE PAGAMTO": "PIX",
+    "NOME DO PACIENTE (FORNECEDOR)": "Juliana Guze Soares da Silva",
+    "OBS": ""
+  },
+  {
+    "DATA": "11/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento da teleconsulta",
+    "MODO DE PAGAMTO": "Chave PIX",
+    "NOME DO PACIENTE (FORNECEDOR)": "Jamille Andrez de Almeida",
+    "OBS": "foi pago o valor do sinal R$100,00 no dia 07/07."
+  },
+  {
+    "DATA": "10/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento de consulta",
+    "MODO DE PAGAMTO": "Crédito (MASTERCARD) parcelado em 2x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Marcia Cristina Guasco",
+    "OBS": ""
+  },
+  {
+    "DATA": "10/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento de consulta",
+    "MODO DE PAGAMTO": "Crédito (MASTERCARD)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Cynthia Priscilla Polzer",
+    "OBS": ""
+  },
+  {
+    "DATA": "10/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento da consulta.",
+    "MODO DE PAGAMTO": "chave PIX",
+    "NOME DO PACIENTE (FORNECEDOR)": "Carolina Costa Fernandes",
+    "OBS": ""
+  },
+  {
+    "DATA": "14/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento consulta.",
+    "MODO DE PAGAMTO": "Débito",
+    "NOME DO PACIENTE (FORNECEDOR)": "Jessica Rodrigues de Souza",
+    "OBS": "foi pago sinal via pix no dia 02/07."
+  },
+  {
+    "DATA": "14/07/2025",
+    "VALOR PAGO": "R$1.200,00",
+    "VALOR TOTAL": "R$1.200,00",
+    "DESCRIÇÃO": "Plano de acompanhamento VITAMINAS.",
+    "MODO DE PAGAMTO": "Crédito (MASTERCARD) parcelamento em 3x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Jessica Rodrigues de Souza"
+  },
+  {
+    "DATA": "14/07/2025.",
+    "VALOR PAGO": "R$800,00",
+    "VALOR TOTAL": "R$800,00",
+    "DESCRIÇÃO": "Pagamento de consulta + bio",
+    "MODO DE PAGAMTO": "Crédito (VISA)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Gabriela Aparecida Rodrigues de Alcantara",
+    "OBS": "Foi pago sinal via PIX no dia 23/06."
+  },
+  {
+    "DATA": "14/07/2025",
+    "VALOR PAGO": "R$800,00",
+    "VALOR TOTAL": "R$800,00",
+    "DESCRIÇÃO": "Pagamento de consulta + bio",
+    "MODO DE PAGAMTO": "Crédito (MASTERCARD)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Claudineia Queiroz",
+    "OBS": "Pago sinal via PIX no dia 02/07."
+  },
+  {
+    "DATA": "14/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento de consulta.",
+    "MODO DE PAGAMTO": "Crédito (Mastercard)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Isabela Leandro Liporace",
+    "OBS": "Foi pago sinal via PIX no dia 30/06."
+  },
+  {
+    "DATA": "15/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento consulta.",
+    "MODO DE PAGAMTO": "Débito (Mastercad)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Camila Fernanda Conte",
+    "OBS": "Pago R$100,00 de sinal via PIX, no dia 10/07."
+  },
+  {
+    "DATA": "16/07/2025",
+    "VALOR PAGO": "R$800,00",
+    "VALOR TOTAL": "R$800,00",
+    "DESCRIÇÃO": "Pagamento consulta + Bio",
+    "MODO DE PAGAMENTO": "Crédito (Mastercad) parcelamento em 3x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Bruno Corcione",
+    "OBS": ""
+  },
+  {
+    "DATA": "17/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento consulta",
+    "MODO DE PAGAMENTO": "Crédito (Mastercad) parcelamento em 2x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Maria Esther D’Alessio Quintas",
+    "OBS": ""
+  },
+  {
+    "DATA": "17/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento consulta",
+    "MODO DE PAGAMENTO": "Crédito (Mastercad)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Bruna Raimondi",
+    "OBS": "Pago sinal de R$100,00 via PIX, no dia 03/07"
+  },
+  {
+    "DATA": "22/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento consulta",
+    "MODO DE PAGAMENTO": "PIX",
+    "NOME DO PACIENTE (FORNECEDOR)": "Fernanda Castro Jobim Vilalva",
+    "OBS": "Pago sinal de R$100,00 via PIX, no dia 08/07"
+  },
+  {
+    "DATA": "22/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento consulta",
+    "MODO DE PAGAMENTO": "Crédito.",
+    "NOME DO PACIENTE (FORNECEDOR)": "Thais Romanelli de Carvalho",
+    "OBS": ""
+  },
+  {
+    "DATA": "22/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento consulta",
+    "MODO DE PAGAMENTO": "Link de pagamento. Crédito parcelamento em 3x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Tereza Leal Pedreira",
+    "OBS": ""
+  },
+  {
+    "DATA": "23/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento consulta",
+    "MODO DE PAGAMENTO": "Crédito.  parcelamento em 2x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Marcella Ximenes de Mello",
+    "OBS": "Pago sinal de R$100,00 via PIX, no dia 14/07"
+  },
+  {
+    "DATA": "23/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento consulta",
+    "MODO DE PAGAMENTO": "PIX",
+    "NOME DO PACIENTE (FORNECEDOR)": "Fabiola Bonicio Bitu",
+    "OBS": "Pago sinal de R$100,00 via PIX, no dia 18/07"
+  },
+  {
+    "DATA": "23/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento consulta",
+    "MODO DE PAGAMENTO": "Crédito (AMEX)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Bruna Raimondi",
+    "OBS": "Pago sinal de R$100,00 via PIX, no dia 07/07"
+  },
+  {
+    "DATA": "24/07/2025",
+    "VALOR PAGO": "R$800,00",
+    "VALOR TOTAL": "R$800,00",
+    "DESCRIÇÃO": "Pagamento consulta + Bio",
+    "MODO DE PAGAMENTO": "Crédito. Parcelamento em 2x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Deborah Bignardi Perdise",
+    "OBS": ""
+  },
+  {
+    "DATA": "24/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento consulta",
+    "MODO DE PAGAMENTO": "Débito.",
+    "NOME DO PACIENTE (FORNECEDOR)": "Denise Lopes Giacomin",
+    "OBS": "Pago sinal de R$100,00 via PIX, no dia 10/07"
+  },
+  {
+    "DATA": "24/07/2025",
+    "VALOR PAGO": "R$3.500,00",
+    "VALOR TOTAL": "R$3.500,00",
+    "DESCRIÇÃO": "Exame Checkup intestino",
+    "MODO DE PAGAMENTO": "Crédito. parcelamento em 3x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Denise Lopes Giacomin",
+    "OBS": ""
+  },
+  {
+    "DATA": "24/07/2025",
+    "VALOR PAGO": "R$800,00",
+    "VALOR TOTAL": "R$800,00",
+    "DESCRIÇÃO": "Pagamento de consulta + Bio",
+    "MODO DE PAGAMENTO": "Crédito. parcelamento em 2x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Agnes Priscilla",
+    "OBS": "Pago sinal de R$100,00, via Pix no dia 16/07."
+  },
+  {
+    "DATA": "24/07/2025",
+    "VALOR PAGO": "R$1.500,00",
+    "VALOR TOTAL": "R$1.500,00",
+    "DESCRIÇÃO": "Reposição de vitaminas",
+    "MODO DE PAGAMENTO": "Crédito parcelamento em 3x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Agnes Priscilla",
+    "OBS": ""
+  },
+  {
+    "DATA": "25/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Exame Pagamento de consulta",
+    "MODO DE PAGAMENTO": "Crédito. parcelamento em 2x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Marlos Vasconcellos Carmo",
+    "OBS": ""
+  },
+  {
+    "DATA": "25/07/2025",
+    "VALOR PAGO": "R$3.500,00",
+    "VALOR TOTAL": "R$3.500,00",
+    "DESCRIÇÃO": "Exame Checkup intestino",
+    "MODO DE PAGAMENTO": "Crédito. parcelamento em 3x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Ronaldo Bias Ferreira Junior",
+    "OBS": ""
+  },
+  {
+    "DATA": "25/07/2025",
+    "VALOR PAGO": "R$900,00",
+    "VALOR TOTAL": "R$900,00",
+    "DESCRIÇÃO": "Reposição de vitaminas",
+    "MODO DE PAGAMENTO": "Crédito. parcelamento em 3x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Ronaldo Bias Ferreira Junior",
+    "OBS": ""
+  },
+  {
+    "DATA": "25/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento de consulta",
+    "MODO DE PAGAMENTO": "Crédito. parcelamento em 3x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Ronaldo Bias Ferreira Junior",
+    "OBS": "Pago sinal de R$100,00, via PIX no dia 22/07"
+  },
+  {
+    "DATA": "25/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento consulta",
+    "MODO DE PAGAMENTO": "Crédito. parcelamento em 3x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Claudia Lorenz",
+    "OBS": "Pago sinal de R$100,00, via PIX no dia 22/07."
+  },
+  {
+    "DATA": "25/07/2025",
+    "VALOR PAGO": "R$13.400,00",
+    "VALOR TOTAL": "R$28.800,00",
+    "DESCRIÇÃO": "Pagamento plano de acompanhamento.",
+    "MODO DE PAGAMTO": "Crédito parcelado em 10x (Mastercard)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Aline Ruiz Menezes",
+    "OBS": "Ja foi pago sinal de R$2.000,00 no dia 17/06/2025. Foi pago R$13.400 no dia 25/06 com parcelamento em 10x. Totalizando no valor do plano R$28.800,00."
+  },
+  {
+    "DATA": "30/07/2025",
+    "VALOR PAGO": "R$800,00",
+    "VALOR TOTAL": "R$800,00",
+    "DESCRIÇÃO": "Pagamento consulta.",
+    "MODO DE PAGAMENTO": "Crédito (Visa)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Isabela Nahas"
+  },
+  {
+    "DATA": "30/07/2025",
+    "VALOR PAGO": "R$7.000,00",
+    "VALOR TOTAL": "R$7.000,00",
+    "DESCRIÇÃO": "Pagamento Implante",
+    "MODO DE PAGAMENTO": "Crédito (VISA)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Andreia Giglio.",
+    "OBS": ""
+  },
+  {
+    "DATA": "30/07/2025",
+    "VALOR PAGO": "R$350,00",
+    "VALOR TOTAL": "R$350,00",
+    "DESCRIÇÃO": "Pagamento de aplicação B12",
+    "MODO DE PAGAMTO": "Crédito. parcelamento em 2x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Fernanda Pellegrini",
+    "OBS": ""
+  },
+  {
+    "DATA": "31/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento de consulta.",
+    "MODO DE PAGAMTO": "Crédito (VISA) parcelamento em 3x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Luiza Grabenweger Maria",
+    "OBS": "Foi pago sinal de R$100,00, via PIX no dia 21/07."
+  },
+  {
+    "DATA": "31/07/2025",
+    "VALOR PAGO": "R$4.800,00",
+    "VALOR TOTAL": "R$4.800,00",
+    "DESCRIÇÃO": "Plano de acompanhamento",
+    "MODO DE PAGAMTO": "Crédito (VISA) parcelamento em 4x",
+    "NOME DO PACIENTE (FORNECEDOR)": "Allys Franco",
+    "OBS": ""
+  },
+  {
+    "DATA": "31/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamento de consulta.",
+    "MODO DE PAGAMTO": "Crédito (Mastercard)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Jocy Silveira Galassi Alexandre",
+    "OBS": "Pago sinal de R$100,00, via PIX no dia 23/07."
+  },
+  {
+    "DATA": "31/07/2025",
+    "VALOR PAGO": "R$700,00",
+    "VALOR TOTAL": "R$700,00",
+    "DESCRIÇÃO": "Pagamneto de consulta",
+    "MODO DE PAGAMTO": "crédito (VISA)",
+    "NOME DO PACIENTE (FORNECEDOR)": "Lais Elizabeth Machado Montagner",
+    "OBS": "Foi pago sinal de R$100,00 via PIX, no dia 11/06."
+  }
+]
