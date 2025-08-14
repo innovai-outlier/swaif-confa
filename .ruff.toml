@@ -1,0 +1,5 @@
+line-length = 88
+exclude = ["tests/manual"]
+
+[lint]
+extend-select = ["I"]

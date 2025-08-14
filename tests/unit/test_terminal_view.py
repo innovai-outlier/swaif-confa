@@ -1,17 +1,18 @@
 """
 Testes Unitários para a Terminal View
 """
-import unittest
 import io
-import sys
 import os
-from unittest.mock import patch, MagicMock
+import sys
+import unittest
+from unittest.mock import patch
 
 # Adiciona o diretório raiz ao path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
-from src.views.terminal_view import TerminalView
 from src.models.analisador import ResultadoAnalise
+from src.views.terminal_view import TerminalView
+
 
 class TestTerminalView(unittest.TestCase):
     """Testes para o componente TerminalView"""

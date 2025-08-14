@@ -1,17 +1,18 @@
 """
 Testes Unitários para o Data Loader
 """
-import unittest
-import pandas as pd
-import tempfile
 import os
-from unittest.mock import patch, MagicMock
 import sys
+import tempfile
+import unittest
+
+import pandas as pd
 
 # Adiciona o diretório raiz ao path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from src.models.data_loader import DataLoader
+
 
 class TestDataLoader(unittest.TestCase):
     """Testes para o componente DataLoader"""

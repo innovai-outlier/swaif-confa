@@ -1,10 +1,12 @@
 """
 Fixtures para Testes - Dados de Teste Padronizados
 """
-import pandas as pd
 import os
 import tempfile
-from typing import Dict, Tuple
+from typing import Dict
+
+import pandas as pd
+
 
 class TestDataFixtures:
     """Classe para gerar dados de teste consistentes"""

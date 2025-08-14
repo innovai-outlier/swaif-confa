@@ -2,14 +2,15 @@
 """
 Script de teste para debug de padronização de valores
 """
-import sys
 import os
+import sys
 
 # Adiciona o diretório raiz ao path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from src.models.data_loader import DataLoader
 from src.models.analisador import AnalisadorConciliacao
+from src.models.data_loader import DataLoader
+
 
 def main():
     print("🔍 TESTE DE DEBUG - PADRONIZAÇÃO DE VALORES")
@@ -29,7 +30,7 @@ def main():
         
         # Aplica padronização com debug
         df_c6_padronizado = analisador._padronizar_valores_c6_faturamento(df_c6)
-        print(f"✅ C6 padronizado concluído")
+        print("✅ C6 padronizado concluído")
         
     except Exception as e:
         print(f"❌ Erro no C6: {e}")
@@ -42,7 +43,7 @@ def main():
         
         # Aplica padronização com debug
         df_gds_padronizado = analisador._padronizar_valores_gds(df_gds)
-        print(f"✅ GDS padronizado concluído")
+        print("✅ GDS padronizado concluído")
         
     except Exception as e:
         print(f"❌ Erro no GDS: {e}")
@@ -55,7 +56,7 @@ def main():
         
         # Aplica padronização com debug
         df_wab_padronizado = analisador._padronizar_valores_wab(df_wab)
-        print(f"✅ WAB padronizado concluído")
+        print("✅ WAB padronizado concluído")
         
     except Exception as e:
         print(f"❌ Erro no WAB: {e}")
