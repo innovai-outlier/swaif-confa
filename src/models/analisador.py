@@ -6,6 +6,22 @@ from typing import Dict, List, Optional, Tuple
 import pandas as pd
 
 
+def _to_float_brl(value):
+    """Convert strings like 'R$ 1.500,75' to float 1500.75."""
+    if value is None:
+        return 0.0
+    if isinstance(value, (int, float)):
+        return float(value)
+    s = str(value).strip()
+    if not s:
+        return 0.0
+    s = s.replace("R$", "").strip()
+    s = s.replace(".", "").replace(",", ".")
+    try:
+        return float(s)
+    except Exception:  # pylint: disable=broad-except
+        return 0.0
+
 @dataclass
 class ResultadoAnalise:
     """Resultado da análise de um par de fontes."""
@@ -79,7 +95,10 @@ class Analisador:
             else:
                 coluna_valor = 'valor'
 
-            total_c6 = df_c6[coluna_valor].sum() if coluna_valor in df_c6.columns else 0.0
+            if coluna_valor in df_c6.columns:
+                total_c6 = pd.to_numeric(df_c6[coluna_valor], errors="coerce").fillna(0).sum()
+            else:
+                total_c6 = 0.0
 
             totais['faturamento_c6'] = {
                 'total': total_c6,
@@ -94,7 +113,10 @@ class Analisador:
             df_gds = self._padronizar_valores_gds(df_gds)
 
             coluna_valor = 'valor' if 'valor' in df_gds.columns else 'valor_venda'
-            total_gds = df_gds[coluna_valor].sum() if coluna_valor in df_gds.columns else 0.0
+            if coluna_valor in df_gds.columns:
+                total_gds = pd.to_numeric(df_gds[coluna_valor], errors="coerce").fillna(0).sum()
+            else:
+                total_gds = 0.0
 
             totais['faturamento_gds'] = {
                 'total': total_gds,
@@ -109,7 +131,10 @@ class Analisador:
             df_wab = self._padronizar_valores_wab(df_wab)
 
             coluna_valor = 'valor' if 'valor' in df_wab.columns else 'valor_venda'
-            total_wab = df_wab[coluna_valor].sum() if coluna_valor in df_wab.columns else 0.0
+            if coluna_valor in df_wab.columns:
+                total_wab = pd.to_numeric(df_wab[coluna_valor], errors="coerce").fillna(0).sum()
+            else:
+                total_wab = 0.0
 
             totais['faturamento_wab'] = {
                 'total': total_wab,
@@ -141,7 +166,7 @@ class Analisador:
                 df_c6 = df_c6[df_c6['status'].str.contains('Recebido', na=False)]
             # Use a coluna de valor disponível
             valor_col = 'valor_recebivel' if 'valor_recebivel' in df_c6.columns else 'valor'
-            total_c6 = df_c6[valor_col].sum()
+            total_c6 = pd.to_numeric(df_c6[valor_col], errors="coerce").fillna(0).sum()
             totais['pagamento_c6'] = {
                 'total': total_c6,
                 'registros': len(df_c6),
@@ -159,7 +184,7 @@ class Analisador:
                 df_gds = df_gds[df_gds['pago'].str.contains('Sim', na=False)]
             # Use a coluna de valor disponível
             valor_col = 'valor_liquido' if 'valor_liquido' in df_gds.columns else 'valor'
-            total_gds = df_gds[valor_col].sum()
+            total_gds = pd.to_numeric(df_gds[valor_col], errors="coerce").fillna(0).sum()
             totais['pagamento_gds'] = {
                 'total': total_gds,
                 'registros': len(df_gds),
@@ -178,11 +203,10 @@ class Analisador:
         registros2 = totais.get(fonte2, {}).get('registros', 0)
         
         diferenca = total1 - total2
-        percentual_diferenca = (
-            (diferenca / max(total1, total2) * 100)
-            if max(total1, total2) > 0
-            else 0
-        )
+        if total1 == 0 or total2 == 0 or max(total1, total2) <= 0:
+            percentual_diferenca = 0.0
+        else:
+            percentual_diferenca = (diferenca / max(total1, total2)) * 100
 
         # Identifica divergências (implementar lógica detalhada se necessário)
         detalhes_divergencias: List[Dict] = []
@@ -209,11 +233,10 @@ class Analisador:
         registros2 = totais.get(fonte2, {}).get('registros', 0)
         
         diferenca = total1 - total2
-        percentual_diferenca = (
-            (diferenca / max(total1, total2) * 100)
-            if max(total1, total2) > 0
-            else 0
-        )
+        if total1 == 0 or total2 == 0 or max(total1, total2) <= 0:
+            percentual_diferenca = 0.0
+        else:
+            percentual_diferenca = (diferenca / max(total1, total2)) * 100
 
         detalhes_divergencias: List[Dict] = []
 
@@ -278,16 +301,14 @@ class Analisador:
         total2 = fonte2_dados.get('total', 0.0)
         registros1 = fonte1_dados.get('registros', 0)
         registros2 = fonte2_dados.get('registros', 0)
-        
+
         diferenca = abs(total1 - total2)
 
-        # Calcula percentual de diferença
-        if total1 > 0:
-            percentual_diferenca = (diferenca / total1) * 100
-        elif total2 > 0:
-            percentual_diferenca = (diferenca / total2) * 100
-        else:
+        base = max(total1, total2)
+        if base <= 0 or total1 == 0.0 or total2 == 0.0:
             percentual_diferenca = 0.0
+        else:
+            percentual_diferenca = (diferenca / base) * 100.0
 
         return ResultadoAnalise(
             par_fontes=par_fontes,
@@ -399,87 +420,44 @@ class Analisador:
         return df_copy
 
     def _padronizar_valores_gds(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Padroniza valores monetários do GDS - Formato: ';1200;' ou ';1173,48;'"""
+        """Padroniza valores monetários do GDS."""
         df_copy = df.copy()
-        
-        # Identifica colunas de valor de forma mais flexível
-        colunas_valor = []
-        for col in df_copy.columns:
-            if any(palavra in col.lower() for palavra in ['valor', 'total', 'liquido', 'receita']):
-                colunas_valor.append(col)
-        
-        # Se não encontrou nenhuma, usa padrões conhecidos
+
+        colunas_valor = [
+            col
+            for col in df_copy.columns
+            if any(p in col.lower() for p in ['valor', 'total', 'liquido', 'receita'])
+        ]
         if not colunas_valor:
             colunas_valor = ['valor', 'valor_liquido']
-        
-        print(f"� GDS - processando {len(colunas_valor)} colunas de valor: {colunas_valor}")
-        
+
         for coluna in colunas_valor:
             if coluna in df_copy.columns:
-                # Tratamento específico para formato GDS (sem R$, apenas vírgula decimal)
-                df_copy[coluna] = (df_copy[coluna]
-                                  .astype(str)
-                                  .str.strip()                    # Remove espaços externos
-                                  .str.replace(',', '.', regex=False)  # Vírgula vira ponto decimal
-                                  .str.strip()                    # Limpeza final
-                                  .replace('', '0'))
-                
-                # Conversão segura para float
-                try:
-                    df_copy[coluna] = df_copy[coluna].astype(float)
-                    print(f"   ✅ {coluna}: R$ {df_copy[coluna].sum():,.2f}")
-                except ValueError as e:
-                    self.logger.warning(f"Erro ao converter coluna GDS {coluna}: {e}")
-                    df_copy[coluna] = pd.to_numeric(df_copy[coluna], errors='coerce').fillna(0)
-                    print(f"   ⚠️ {coluna} (conversão segura): R$ {df_copy[coluna].sum():,.2f}")
-        
-        # Padroniza datas
+                df_copy[coluna] = df_copy[coluna].map(_to_float_brl)
+
         for coluna_data in ['data_emissao', 'data_vencimento', 'data_baixa']:
             if coluna_data in df_copy.columns:
-                df_copy[coluna_data] = pd.to_datetime(df_copy[coluna_data], format='%d/%m/%Y', errors='coerce')
-        
+                df_copy[coluna_data] = pd.to_datetime(
+                    df_copy[coluna_data], format='%d/%m/%Y', errors='coerce'
+                )
+
         return df_copy
 
     def _padronizar_valores_wab(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Padroniza valores monetários do WAB - Formato: 'R$700,00'"""
+        """Padroniza valores monetários do WAB."""
         df_copy = df.copy()
-        
-        # Identifica colunas de valor de forma mais flexível
-        colunas_valor = []
-        for col in df_copy.columns:
-            if any(palavra in col.lower() for palavra in ['valor', 'total', 'pago']):
-                colunas_valor.append(col)
-        
-        # Se não encontrou nenhuma, usa padrões conhecidos
+
+        colunas_valor = [
+            col for col in df_copy.columns if any(p in col.lower() for p in ['valor', 'total', 'pago'])
+        ]
         if not colunas_valor:
             colunas_valor = ['valor_pago', 'valor_total']
-        
-        print(f"� WAB - processando {len(colunas_valor)} colunas de valor: {colunas_valor}")
-        
+
         for coluna in colunas_valor:
             if coluna in df_copy.columns:
-                # Tratamento específico para formato WAB: 'R$700,00'
-                df_copy[coluna] = (df_copy[coluna]
-                                  .astype(str)
-                                  .str.strip()                    # Remove espaços externos
-                                  .str.replace('R$', '', regex=False)  # Remove R$
-                                  .str.strip()                    # Remove espaços restantes
-                                  .str.replace('.', '', regex=False)   # Remove pontos de milhar
-                                  .str.replace(',', '.', regex=False)  # Vírgula vira ponto decimal
-                                  .str.strip()                    # Limpeza final
-                                  .replace('', '0'))
-                
-                # Conversão segura para float
-                try:
-                    df_copy[coluna] = df_copy[coluna].astype(float)
-                    print(f"   ✅ {coluna}: R$ {df_copy[coluna].sum():,.2f}")
-                except ValueError as e:
-                    self.logger.warning(f"Erro ao converter coluna WAB {coluna}: {e}")
-                    df_copy[coluna] = pd.to_numeric(df_copy[coluna], errors='coerce').fillna(0)
-                    print(f"   ⚠️ {coluna} (conversão segura): R$ {df_copy[coluna].sum():,.2f}")
-        
-        # Padroniza datas
+                df_copy[coluna] = pd.to_numeric(df_copy[coluna], errors='coerce').fillna(0)
+
         if 'data' in df_copy.columns:
             df_copy['data'] = pd.to_datetime(df_copy['data'], format='%d/%m/%Y', errors='coerce')
-        
+
         return df_copy

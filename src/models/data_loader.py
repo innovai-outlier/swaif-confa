@@ -5,6 +5,7 @@ from typing import Dict, List, Optional
 
 import pandas as pd
 
+from .analisador import _to_float_brl
 from .c6_loader import (
     FATURAMENTO_C6_COLS,
     PAGAMENTO_C6_COLS,
@@ -83,6 +84,16 @@ class DataLoader:
         }
 
         df_pad = df.rename(columns=colunas_renomear)
+
+        for coluna in [
+            'valor_venda',
+            'valor_recebivel',
+            'descontos',
+            'valor_pagamento',
+            'valor_parcela',
+        ]:
+            if coluna in df_pad.columns:
+                df_pad[coluna] = df_pad[coluna].map(_to_float_brl)
 
         # Cria coluna 'valor' genérica quando possível para evitar KeyError
         if 'valor' not in df_pad.columns:
