@@ -57,8 +57,43 @@ class DataLoader:
         self.pagamento_c6_cols = PAGAMENTO_C6_COLS
         
         self.pagamento_gds_cols = self.faturamento_gds_cols  # Mesma estrutura
-        
+
         self.wab_cols = WAB_COLS
+
+    def padronizar_colunas(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Padroniza nomes de colunas para um formato interno consistente."""
+        if df.empty:
+            return df
+
+        colunas_renomear = {
+            'Data da Venda': 'data_venda',
+            'Data Venda': 'data_venda',
+            'Data do Recebível': 'data_recebivel',
+            'Data Pagamento': 'data_pagamento',
+            'Valor da Venda': 'valor_venda',
+            'Valor Venda': 'valor_venda',
+            'Valor da venda': 'valor_venda',
+            'Valor Recebível': 'valor_recebivel',
+            'Valor do Recebível': 'valor_recebivel',
+            'Valor Pagamento': 'valor_pagamento',
+            'Valor da parcela': 'valor_parcela',
+            'Valor da Parcela': 'valor_parcela',
+            'Descontos': 'descontos',
+            'Cliente': 'cliente',
+        }
+
+        df_pad = df.rename(columns=colunas_renomear)
+
+        # Cria coluna 'valor' genérica quando possível para evitar KeyError
+        if 'valor' not in df_pad.columns:
+            if 'valor_venda' in df_pad.columns:
+                df_pad['valor'] = df_pad['valor_venda']
+            elif 'valor_recebivel' in df_pad.columns:
+                df_pad['valor'] = df_pad['valor_recebivel']
+            elif 'valor_pagamento' in df_pad.columns:
+                df_pad['valor'] = df_pad['valor_pagamento']
+
+        return df_pad
 
     def ler_csv(
         self,
@@ -73,6 +108,7 @@ class DataLoader:
             df.columns = df.columns.str.strip()
             if mapping:
                 df = df.rename(columns=mapping)
+            df = self.padronizar_colunas(df)
             return df
         except FileNotFoundError:
             self.logger.warning(f"Arquivo não encontrado: {file_path}")
@@ -106,7 +142,8 @@ class DataLoader:
         Returns:
             DataFrame padronizado com dados do WAB
         """
-        return wab_json(file_path)
+        df = wab_json(file_path)
+        return self.padronizar_colunas(df)
 
     def converter_wab_txt_para_json(self, txt_path: str, json_path: Optional[str] = None) -> Optional[str]:
         """Converte arquivo WAB TXT para JSON."""
@@ -225,11 +262,12 @@ class DataLoader:
 
         mapping = mapeamentos.get(fonte)
         if not mapping:
-            return df
+            return self.padronizar_colunas(df)
 
         df_copy = df.copy()
         df_copy.columns = df_copy.columns.str.strip()
-        return df_copy.rename(columns=mapping)
+        df_copy = df_copy.rename(columns=mapping)
+        return self.padronizar_colunas(df_copy)
 
     def _get_pasta_mes(self, mes_ano: str) -> str:
         """Normaliza identificadores de mês para uso em pastas."""
