@@ -6,6 +6,7 @@ from typing import Dict, List, Optional
 import pandas as pd
 
 from .analisador import _to_float_brl
+
 from .c6_loader import (
     FATURAMENTO_C6_COLS,
     PAGAMENTO_C6_COLS,
@@ -114,12 +115,14 @@ class DataLoader:
         """Lê arquivo CSV e aplica mapeamento de colunas."""
         mapping = column_mapping or {}
 
+
         try:
             df = pd.read_csv(file_path, sep=None, engine="python")
             df.columns = df.columns.str.strip()
             if mapping:
                 df = df.rename(columns=mapping)
             df = self.padronizar_colunas(df)
+
             return df
         except FileNotFoundError:
             self.logger.warning(f"Arquivo não encontrado: {file_path}")
@@ -153,8 +156,10 @@ class DataLoader:
         Returns:
             DataFrame padronizado com dados do WAB
         """
+
         df = wab_json(file_path)
         return self.padronizar_colunas(df)
+
 
     def converter_wab_txt_para_json(self, txt_path: str, json_path: Optional[str] = None) -> Optional[str]:
         """Converte arquivo WAB TXT para JSON."""

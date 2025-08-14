@@ -1,10 +1,10 @@
 """Terminal View - Interface estilo mainframe no terminal"""
 import os
 import sys
+
 from typing import Dict, List
 
 from src.models.analisador import ResultadoAnalise
-
 
 def format_brl(value: float) -> str:
     try:
@@ -27,8 +27,7 @@ def safe_pause(prompt: str = "\nPressione ENTER para continuar...") -> None:
         input(prompt)
     except (EOFError, OSError):
         return
-
-
+      
 class TerminalView:
     """Interface de terminal estilo mainframe"""
     

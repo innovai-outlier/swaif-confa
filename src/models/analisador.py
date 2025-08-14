@@ -5,7 +5,6 @@ from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 
-
 def _to_float_brl(value):
     """Convert BRL-formatted strings to float.
 
@@ -124,6 +123,7 @@ class Analisador:
             df_gds = self._padronizar_valores_gds(df_gds)
 
             coluna_valor = 'valor' if 'valor' in df_gds.columns else 'valor_venda'
+
             if coluna_valor in df_gds.columns:
                 total_gds = pd.to_numeric(df_gds[coluna_valor], errors="coerce").fillna(0).sum()
             else:
@@ -142,11 +142,11 @@ class Analisador:
             df_wab = self._padronizar_valores_wab(df_wab)
 
             coluna_valor = 'valor' if 'valor' in df_wab.columns else 'valor_venda'
+
             if coluna_valor in df_wab.columns:
                 total_wab = pd.to_numeric(df_wab[coluna_valor], errors="coerce").fillna(0).sum()
             else:
                 total_wab = 0.0
-
             totais['faturamento_wab'] = {
                 'total': total_wab,
                 'registros': len(df_wab),
@@ -177,6 +177,7 @@ class Analisador:
                 df_c6 = df_c6[df_c6['status'].str.contains('Recebido', na=False)]
             # Use a coluna de valor disponível
             valor_col = 'valor_recebivel' if 'valor_recebivel' in df_c6.columns else 'valor'
+
             total_c6 = pd.to_numeric(df_c6[valor_col], errors="coerce").fillna(0).sum()
             totais['pagamento_c6'] = {
                 'total': total_c6,
@@ -195,6 +196,7 @@ class Analisador:
                 df_gds = df_gds[df_gds['pago'].str.contains('Sim', na=False)]
             # Use a coluna de valor disponível
             valor_col = 'valor_liquido' if 'valor_liquido' in df_gds.columns else 'valor'
+
             total_gds = pd.to_numeric(df_gds[valor_col], errors="coerce").fillna(0).sum()
             totais['pagamento_gds'] = {
                 'total': total_gds,
@@ -214,6 +216,7 @@ class Analisador:
         registros2 = totais.get(fonte2, {}).get('registros', 0)
         
         diferenca = total1 - total2
+
         if total1 == 0 or total2 == 0 or max(total1, total2) <= 0:
             percentual_diferenca = 0.0
         else:
@@ -244,6 +247,7 @@ class Analisador:
         registros2 = totais.get(fonte2, {}).get('registros', 0)
         
         diferenca = total1 - total2
+
         if total1 == 0 or total2 == 0 or max(total1, total2) <= 0:
             percentual_diferenca = 0.0
         else:
@@ -314,6 +318,7 @@ class Analisador:
         registros2 = fonte2_dados.get('registros', 0)
 
         diferenca = abs(total1 - total2)
+
 
         base = total1
         if base <= 0 or total1 == 0.0 or total2 == 0.0:
