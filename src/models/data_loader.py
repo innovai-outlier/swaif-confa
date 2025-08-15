@@ -6,7 +6,6 @@ from typing import Dict, List, Optional
 import pandas as pd
 
 from .analisador import _to_float_brl
-
 from .c6_loader import (
     FATURAMENTO_C6_COLS,
     PAGAMENTO_C6_COLS,

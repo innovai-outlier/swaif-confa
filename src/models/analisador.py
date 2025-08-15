@@ -5,6 +5,7 @@ from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 
+
 def _to_float_brl(value):
     """Convert BRL-formatted strings to float.
 

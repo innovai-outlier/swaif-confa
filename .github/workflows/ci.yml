@@ -16,6 +16,13 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pytest ruff mypy pandas || true
+      - name: Auto-fix linting and formatting errors
+        run: |
+          if command -v ruff >/dev/null 2>&1; then
+            ruff check . --fix
+          else
+            echo "ruff not installed; auto-fix step skipped"
+          fi
       - name: Run tests
         run: |
           if command -v pytest >/dev/null 2>&1; then
